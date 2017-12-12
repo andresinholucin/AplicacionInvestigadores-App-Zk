@@ -1,0 +1,16 @@
+<!-- No tiene definicion del ViewModel porque lo 
+     hereda desde el formulario principal: index.zul -->
+<grid model="@load(vm.opciones)"
+	  hflex="1" vflex="1" sclass="color: black; text-decoration: none;">
+	<columns>
+		<column width="70px"/>
+		<column/>
+	</columns>
+	<template name="model">
+		<row onClick="@command('cargaUrl', opcion=each)">
+	        <image src="@load(each.imagen)" height="40px"/>
+	        <label value="@load(each.titulo)"/>
+	    </row>
+	</template>
+	<rows />
+</grid>

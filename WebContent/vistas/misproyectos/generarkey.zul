@@ -1,0 +1,13 @@
+<zk>
+<window  border="normal"
+		 apply="org.zkoss.bind.BindComposer" 
+		 viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.GenerarKeyControl')"
+		 hflex="1" vflex="1" >
+<vlayout>
+	<textbox value="@bind(vm.textokey)" hflex="1"/>
+	<button label="Generar Key" onClick="@command('generarkey')" />
+
+</vlayout>
+
+</window>
+</zk>

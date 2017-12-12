@@ -1,0 +1,75 @@
+<?page title="Creacion Del Proyecto" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:x="xhtml" >
+					 
+<window apply="org.zkoss.bind.BindComposer" 
+					 viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.GenerarKeyControl')"
+					 border="normal">
+    <style>   
+        .nav_toolbar .z-toolbarbutton-content i { font-size: 20px;}
+        .nav_tabs .z-tabpanel { padding: 0; border-bottom: 0 none;}
+        .nav_tabs .z-tabpanels .z-toolbarbutton-content { padding: 4px;}
+        .nav_category { cursor:pointer; }
+        .nav_text { color: #696569; font-size : 24px; font-weight: bold;}
+    </style>
+    <tabbox width="100%" sclass="nav_tabs">
+        <tabs id="tabs">
+            <tab label="Informacion Del Proyecto" onSelect="updateCategory(self.label)"/>
+            <tab label="Informacion De los formularios" onSelect="updateCategory(self.label)"/>
+            <tab label="Tablas" onSelect="updateCategory(self.label)"/>
+        </tabs>
+		        		<!--  
+				        <toolbar sclass="nav_toolbar">
+				            <toolbarbutton target="_zkdemo" style="color: #3a92c8;"
+				                    iconSclass="z-icon-twitter-square" href="http://twitter.com/zkoss" />
+				            <toolbarbutton target="_zkdemo" style="color: #3b5998;"
+				                    iconSclass="z-icon-facebook-square" href="http://www.facebook.com/zk.framework" />
+				            <toolbarbutton target="_zkdemo" style="color: #696569;"
+				                    iconSclass="z-icon-github-square" href="https://github.com/zkoss/" />
+				        </toolbar>
+				        -->
+        <tabpanels>
+            <tabpanel>
+            
+                <iframe id="iframe1" src="/vistas/misproyectos/crearproyecto.zul"
+    				width="600px" height="400px" style="border: 1px solid gray" />
+                
+            </tabpanel>
+            <tabpanel>
+                <iframe id="iframe2" src="/vistas/misproyectos/crearinterfaz.zul"
+    				width="600px" height="400px" style="border: 1px solid gray" />
+                
+            </tabpanel>
+            <tabpanel>
+         
+                <iframe id="iframe3" src="/vistas/misproyectos/generarkey.zul"
+    				width="600px" height="400px" style="border: 1px solid gray" />
+         
+
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
+    <separator height="30px"></separator>
+    <zscript><![CDATA[
+        void updateCategory(String category) {
+            current_category.setValue(category);
+            current_subpage.setValue("Index");
+        }
+        void updateSubPage(String sub) {
+            current_subpage.setValue(sub);
+        }
+    ]]></zscript>
+    
+    
+    <hlayout>
+        <label id="current_category" sclass="nav_text nav_category" onClick='updateSubPage("Index")'>Our Product</label>
+        <label sclass="nav_text">-</label>
+        <label id="current_subpage" sclass="nav_text">Index</label>
+    </hlayout>
+    
+    <hlayout>
+			<button id="grabar" label="Grabar" iconSclass="z-icon-save"     onClick="@command('grabar')" />
+			<button id="salir"  label="Salir"  iconSclass="z-icon-sign-out" onClick="@command('salir')" />
+		</hlayout>
+ </window>
+ 
+</zk>

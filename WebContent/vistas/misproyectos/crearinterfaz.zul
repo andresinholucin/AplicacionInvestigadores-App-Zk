@@ -1,0 +1,64 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window  border="normal"
+         hflex="1" vflex="1">
+
+
+	<vlayout>
+		<hlayout>
+			<grid  vflex="1">
+				<columns>
+					<column align="right" hflex="min" />
+					<column hflex="max"/>
+				</columns>
+				<rows>
+					
+					<row>
+						<cell
+							style="font-weight: bold; color:#636363;">
+							Nombre Interfaz - Tabla :
+						</cell>
+						<cell >
+							<textbox id="nombre"
+								value="" 
+								constraint="no empty: Debe ingresar el nombre del proyecto" maxlength="255"  vflex="1" />
+						</cell>
+					</row>
+					
+					<row>
+						<cell
+							style="font-weight: bold; color:#636363;">
+							Descripcion Interfaz :
+						</cell>
+						<cell>
+							<textbox id="descripcion"
+								value="" />
+						</cell>
+					</row>
+					
+					<row>
+						<cell
+							style="font-weight: bold; color:#636363;">
+							Interfaz Padre :
+						</cell>
+						<cell>
+							<combobox id="interfazpadre"
+								value="" />
+						</cell>
+					</row>
+				</rows>
+			</grid>
+			
+		</hlayout>
+		
+		<!-- Los iconos listados con iconSclass son de: http://fontawesome.io/icons/ -->
+		<hlayout>
+			<button id="grabar" label="Grabar" iconSclass="z-icon-save"
+				onClick="" />
+			<button id="salir" label="Salir"
+				iconSclass="z-icon-sign-out"
+				onClick="" />
+		</hlayout>
+	</vlayout>
+</window>
+</zk>

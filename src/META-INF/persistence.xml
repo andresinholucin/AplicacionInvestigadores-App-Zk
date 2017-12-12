@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="AplicacionInvestigadores-App-Zk" transaction-type="RESOURCE_LOCAL">
+		<class>ec.edu.upse.proyinv.modelo.Campo</class>
+		<class>ec.edu.upse.proyinv.modelo.Canton</class>
+		<class>ec.edu.upse.proyinv.modelo.Carrera</class>
+		<class>ec.edu.upse.proyinv.modelo.CarreraPersona</class>
+		<class>ec.edu.upse.proyinv.modelo.Dato</class>
+		<class>ec.edu.upse.proyinv.modelo.Facultad</class>
+		<class>ec.edu.upse.proyinv.modelo.Interfaz</class>
+		<class>ec.edu.upse.proyinv.modelo.InterfazProyecto</class>
+		<class>ec.edu.upse.proyinv.modelo.Opcion</class>
+		<class>ec.edu.upse.proyinv.modelo.OpcionPrivilegio</class>
+		<class>ec.edu.upse.proyinv.modelo.Pai</class>
+		<class>ec.edu.upse.proyinv.modelo.Parroquia</class>
+		<class>ec.edu.upse.proyinv.modelo.Persona</class>
+		<class>ec.edu.upse.proyinv.modelo.Privilegio</class>
+		<class>ec.edu.upse.proyinv.modelo.Provincia</class>
+		<class>ec.edu.upse.proyinv.modelo.Proyecto</class>
+		<class>ec.edu.upse.proyinv.modelo.ProyectosUsuario</class>
+		<class>ec.edu.upse.proyinv.modelo.Universidad</class>
+		<class>ec.edu.upse.proyinv.modelo.Usuario</class>
+		<class>ec.edu.upse.proyinv.modelo.UsuarioPrivilegio</class>
+		<properties>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/proyinv?serverTimezone=UTC"/>
+			<property name="javax.persistence.jdbc.user" value="root"/>
+			<property name="javax.persistence.jdbc.password" value="upse"/>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+		</properties>
+	</persistence-unit>
+</persistence>

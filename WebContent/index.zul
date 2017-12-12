@@ -1,0 +1,19 @@
+<zk>
+	<borderlayout hflex="1" 
+	              vflex="1" 
+	              apply="org.zkoss.bind.BindComposer" 
+	              viewModel="@id('vm') @init('ec.edu.upse.proyinv.control.general.Menu')">
+		<north height="100px" border="none" >
+			<include src="/banner.zul"/>
+		</north>
+		<west width="260px" border="none" collapsible="true" splittable="true" minsize="300">
+			<include src="/menu.zul"/>
+		</west>
+		<center id="mainContent" autoscroll="true">
+			<include src="@bind(vm.formularioActual)"/>
+		</center>
+		<south height="50px" border="none">
+			<include src="/footer.zul"/>
+		</south>
+	</borderlayout>
+</zk>

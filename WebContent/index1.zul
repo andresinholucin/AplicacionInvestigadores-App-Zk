@@ -1,0 +1,46 @@
+<zk>
+	<zscript>
+        //puro codigo java
+        
+        
+        void llamarLogin(){
+            Messagebox.show("Hola ZK!");
+        }
+    </zscript>
+	<borderlayout hflex="1" 
+	              vflex="1" 
+	              apply="org.zkoss.bind.BindComposer" 
+	              viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.index1control')"
+	              >
+		<north height="100px" border="none" >
+			<!-- <include src="/banner1.zul"/> -->
+			<div hflex="1" vflex="1" align="center"
+				style="background-color:#102d35; color:white; padding:5px 10px;">
+				<hbox hflex="1" vflex="1" align="center">
+					<a href="http://www.upse.edu.ec">
+						<image src="/img/UPSE.png" width="90px" />
+					</a>
+					<div width="400px">
+						<label value="PROYINV"
+							style="font-size: 2.4em;" />
+					</div>
+					<hbox hflex="1" vflex="1" pack="end" align="end">
+						<label value="" />
+
+						<button label="Iniciar Sesion" type="button"
+							onClick="llamarLogin()" />
+						<button label="Registrarse" href="/vistas/Registrarse/Registro.zul" />
+					</hbox>
+				</hbox>
+			</div>
+		</north>
+		
+		<center id="mainContent" autoscroll="true">
+			<include src=""></include>
+		</center>
+		
+		<south height="50px" border="none">
+			<include src="/footer.zul"/>
+		</south>
+	</borderlayout>
+</zk>

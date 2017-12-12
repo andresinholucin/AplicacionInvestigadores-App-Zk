@@ -1,0 +1,61 @@
+<zk>
+
+
+	<hbox vflex="1" hflex="1" align="center" pack="center"
+		spacing="20px">
+		<h:form id="f" name="f" action="j_spring_security_check"
+			method="POST" xmlns:h="native">
+			<vlayout>
+				<window title="Control de acceso..." border="normal"
+					hflex="min">
+					<vbox hflex="min" align="center">
+
+						<!-- Formulario para autenticacion -->
+
+
+						<grid hflex="min">
+							<columns>
+								<column hflex="min" align="right" />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									Usuario :
+									<textbox id="u" name="username"
+										width="200px" />
+								</row>
+								<row>
+									Clave :
+									<textbox id="p" name="password"
+										type="password" width="200px" />
+								</row>
+								<row>
+									Recorderme:
+									<checkbox id="r"
+										name="_spring_security_remember_me" />
+								</row>
+							</rows>
+						</grid>
+						<html>
+							<input type="hidden"
+								name="${_csrf.parameterName}" value="${_csrf.token}" />
+						</html>
+						<!-- Procesa el login -->
+						<button id="login" label="Login" type="submit" />
+
+						<html style="color:red"
+							if="${not empty param.login_error}">
+							
+							<![CDATA[ Ingreso fallido, intente
+							nuevamente.<br/><br/> Razon:
+							${SPRING_SECURITY_LAST_EXCEPTION.message}
+							]]>
+							
+					</html>
+
+					</vbox>
+				</window>
+			</vlayout>
+		</h:form>
+	</hbox>
+</zk>

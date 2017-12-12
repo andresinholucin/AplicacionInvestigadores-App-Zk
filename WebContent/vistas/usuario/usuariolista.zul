@@ -1,0 +1,66 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Lista Usuario" border="normal"
+			apply="org.zkoss.bind.BindComposer" 
+            viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.UsuarioLista')"
+	        hflex="1" vflex="1" >
+	        
+		<vlayout vflex="1">
+		<toolbar>
+				<toolbarbutton label="Nuevo Usuario"    iconSclass="z-icon-plus"     onClick=""/>
+				<toolbarbutton label="Editar Usuario"   iconSclass="z-icon-pencil"   onClick=""/>
+				<toolbarbutton label="Deshabilitar"   iconSclass="z-icon-minus"    onClick=""/>
+				<separator orient="vertical" width="50px" />
+				<separator orient="vertical" width="50px" />
+				<toolbarbutton label="Imprimir usuario"   iconSclass="z-icon-print" onClick=""/>
+		</toolbar>
+		<hlayout>
+				<textbox value="" hflex="1" />
+				<button label="Buscar!" iconSclass="z-icon-search" onClick="" />
+		</hlayout>
+		
+		<hlayout vflex="1" hflex="1">
+				<listbox 
+						 
+						 onSelect=""
+						 hflex="1" vflex="1">
+					<listhead>
+						<listheader label="Usuario" />
+						<listheader label="Nombre" width="150px"/>
+					</listhead>
+					<template name="model">
+						<listitem>
+							<listcell label="" />
+							<listcell label="" />
+						</listitem>
+					</template>
+				</listbox>
+			</hlayout>
+		
+			<hlayout>
+				<label value="ID" />
+				<textbox></textbox>
+			</hlayout>
+			<hlayout>
+				<label value="Nombre" />
+				<textbox></textbox>
+
+			</hlayout>
+			<hlayout>
+				<label value="usuario" />
+				<textbox></textbox>
+
+			</hlayout>
+			<hlayout>
+				<label value="Clave" />
+				<textbox></textbox>
+
+			</hlayout>
+			<hlayout>
+				<label value="Repita Clave" />
+				<textbox></textbox>
+
+			</hlayout>
+		</vlayout>
+	</window>
+</zk>

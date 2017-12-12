@@ -1,0 +1,30 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div hflex="1" vflex="1" align="center"
+		style="background-color:#102d35; color:white; padding:5px 10px;">
+		<hbox hflex="1" vflex="1" align="center">
+			<a href="http://www.upse.edu.ec">
+				<image src="/img/UPSE.png" width="90px" />
+			</a>
+			<div width="400px">
+				<label value="PROYINV" style="font-size: 2.4em;" />
+			</div>
+			<hbox hflex="1" vflex="1" pack="end" align="end">
+			<label value="" />
+
+				<button label="Iniciar Sesion" type="button" onClick="llamarLogin()"/>
+				<button label="Registrarse" type="submit"/>
+		</hbox>
+		</hbox>
+	</div>
+	
+	<zscript>
+        //puro codigo java
+        
+        
+        void llamarLogin(){
+            Messagebox.show("Hola ZK!");
+        }
+    </zscript>
+</zk>
+	

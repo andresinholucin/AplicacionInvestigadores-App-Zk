@@ -1,0 +1,73 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Mis Proyectos" border="normal"
+			apply="org.zkoss.bind.BindComposer" 
+            viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.MisproyectosControl')"
+	        hflex="1" vflex="1" >
+	        
+		<vlayout vflex="1">
+		<toolbar>
+				<toolbarbutton label="Nuevo Proyecto"    iconSclass="z-icon-plus"     onClick="@command('nuevo')"/>
+				<toolbarbutton label="Configura Proyecto"   iconSclass="z-icon-pencil"   onClick="@command('configurar')"/>
+				<toolbarbutton label="Deshabilitar Proyecto"   iconSclass="z-icon-minus"    onClick=""/>
+				<separator orient="vertical" width="50px" />
+				
+		</toolbar>
+		<hlayout>
+				<textbox value="@bind(vm.textoBuscar)" hflex="1" />
+				<button label="Buscar!" iconSclass="z-icon-search" onClick="@command('buscar')" />
+		</hlayout>
+		
+		<hlayout vflex="1" hflex="1">
+		 
+				<listbox model="@load(vm.proyectos)"
+						 selectedItem="@bind(vm.proyectosSeleccionado)"
+						 onSelect="@command('actualizaCampos')"
+						 hflex="1" vflex="1" >
+						
+					<listhead>
+						<listheader label="Nº" />
+						<listheader label="Proyecto" />
+						<listheader label="Descripcion" />
+						<listheader label="Fecha Creacion" />
+					</listhead>
+					<template name="model">
+						<listitem>
+							<listcell label="@load(each.idProyecto)"/>
+							<listcell label="@load(each.proyecto)"></listcell>
+							<listcell label="@load(each.descripcion)"></listcell>
+							<listcell label="@load(each.fechaCreacion)"></listcell>
+						</listitem>
+					</template>
+				</listbox>
+			</hlayout>
+		
+		
+		<hlayout>
+				<textbox hflex="1" />
+				<button label="Buscar!" iconSclass="z-icon-search" onClick="@command('buscar2')" />
+		</hlayout>
+		
+		<hlayout vflex="1" hflex="1">
+				<listbox model="@load(vm.interfazes)"
+						 hflex="1" vflex="1">
+					<listhead>
+						<listheader label="id_interfaz" />
+						<listheader label="Interfaz" />
+						<listheader label="Descripcion" />
+					
+					</listhead>
+					<template name="model">
+						<listitem>
+							<listcell label="@load(each.idInterfaz)" />
+							<listcell label="@load(each.nombreinterfaz)" />
+							<listcell label="@load(each.descripcion)" />
+						
+						</listitem>
+					</template>
+				</listbox>
+			</hlayout>
+		
+		</vlayout>
+	</window>
+</zk>

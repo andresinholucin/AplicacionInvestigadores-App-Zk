@@ -1,0 +1,30 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+
+	<window title="new page title" border="normal">
+		<vlayout>
+			<hlayout>
+				<label value="ID" />
+				<textbox></textbox>
+			</hlayout>
+			<hlayout>
+				<label value="Nombre" />
+				<textbox></textbox>
+
+			</hlayout>
+			<hlayout>
+				<label value="usuario" />
+				<textbox></textbox>
+
+			</hlayout>
+			<hlayout>
+				<label value="Clave" />
+				<textbox></textbox>
+
+			</hlayout>
+			<hlayout>
+				<label value="Repita Clave" />
+				<textbox></textbox>
+
+			</hlayout>
+		</vlayout>
+	</window>
