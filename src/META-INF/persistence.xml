@@ -21,6 +21,8 @@
 		<class>ec.edu.upse.proyinv.modelo.Universidad</class>
 		<class>ec.edu.upse.proyinv.modelo.Usuario</class>
 		<class>ec.edu.upse.proyinv.modelo.UsuarioPrivilegio</class>
+		<class>ec.edu.upse.proyinv.modelo.Componente</class>
+		<class>ec.edu.upse.proyinv.modelo.EnunciadoCampo</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/proyinv?serverTimezone=UTC"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>

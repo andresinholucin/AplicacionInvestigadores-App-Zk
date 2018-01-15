@@ -1,3 +1,25 @@
+<?component name="proyecto-Nuevo" extends="div" class="ec.edu.upse.proyinv.controlador.misproyecto.ProyectoNuevoControl"?>
+<?component name="interface-Nuevo" extends="div" class="ec.edu.upse.proyinv.controlador.misproyecto.InterfaceNuevoControl"?>
+<window 
+id="winProyectoNuevo" 
+apply="ec.edu.upse.proyinv.controlador.misproyecto.ProyectoNuevoComposer" 
+vflex="min" width="600px" >
+	
+	<proyecto-Nuevo id="pronuevo"/>
+			
+	<interface-Nuevo id="interfacenuevo"/>
+	
+	<hlayout>
+			<button id="grabar" label="Grabar" iconSclass="z-icon-save"   />
+			<button id="salir"  label="Salir"  iconSclass="z-icon-sign-out" />
+	</hlayout>
+</window>
+
+<!-- 
+
+width="580px"
+
+
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
 <window title="Nuevo proyecto" 
@@ -6,6 +28,8 @@
         viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.ProyectoNuevoControl')"
 		border="normal"  vflex="min" width="580px" >
 	 <caption label="Registro Proyinv" style="center" />
+	 
+	 
             <label value="Datos Personales" />
            
             <borderlayout  vflex="min" hflex="max"> 
@@ -23,6 +47,7 @@
             					Descripcion del Proyecto:
             					<textbox
             					id="descripcion"
+            					rows="2" hflex="1" 
             					value="@bind(vm.descripcion)"
             					constraint="no empty"/>
             				</row>
@@ -32,6 +57,28 @@
             	</center>
             </borderlayout>
             
+        <toolbar>
+				<toolbarbutton label="Agregar Variable"    iconSclass="z-icon-plus"     onClick="add()"/>
+				<toolbarbutton label="Quitar Variable"   iconSclass="z-icon-minus"    onClick=""/>
+				<separator orient="vertical" width="50px" />		
+		</toolbar>    
+  	
+	    <zscript><![CDATA[
+	    List items = new ArrayList();
+	    for (int i = 1; i <= 5; i++) {
+	    	items.add("Item #" + i);
+	    }
+		]]></zscript>
+		
+		<zscript><![CDATA[
+		    public void add(){
+		    	System.out.println("vas bien");
+	    		items.add("Item #" + 1);
+		    }
+		]]></zscript>
+    
+
+
            
 		<hlayout>
 			<button id="grabar" label="Grabar" iconSclass="z-icon-save"     onClick="@command('grabar')" />
@@ -39,3 +86,4 @@
 		</hlayout>
 </window>
 </zk>
+ -->

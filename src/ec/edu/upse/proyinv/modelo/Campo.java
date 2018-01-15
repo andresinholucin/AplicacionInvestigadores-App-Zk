@@ -58,6 +58,14 @@ public class Campo implements Serializable {
 	@OneToMany(mappedBy="campo")
 	@Getter @Setter private List<Dato> datos;
 
+	//bi-directional many-to-one association to componente
+	@ManyToOne
+	@JoinColumn(name="id_componente")
+	@Getter @Setter private Componente componente;
 	
+	//bi-directional many-to-one association to enunciadoCampo
+	@ManyToOne
+	@JoinColumn(name="id_enunciado_campo")
+	@Getter @Setter private EnunciadoCampo enunciadoCampo;
 
 }

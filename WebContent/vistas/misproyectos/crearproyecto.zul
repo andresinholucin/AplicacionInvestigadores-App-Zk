@@ -1,6 +1,4 @@
 <window id="winPersonaEditar" border="normal" 
-	apply="org.zkoss.bind.BindComposer"
-	viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.CrearproyectoControl')"
 	hflex="1" vflex="1">
 	
 	<vlayout>

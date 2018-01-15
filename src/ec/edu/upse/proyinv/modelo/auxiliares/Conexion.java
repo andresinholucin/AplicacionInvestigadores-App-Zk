@@ -4,8 +4,8 @@ import lombok.Getter;
 
 public class Conexion {
 	//parametros para conectar al web service
-	@Getter private String puerto="8080";
-	@Getter private String direccion="192.168.44.169";
+	@Getter private String puerto="8081";
+	@Getter private String direccion="localhost";
 	@Getter private String aplicacion="/AplicacionInvestigadores-WS/api/";
 	
 	

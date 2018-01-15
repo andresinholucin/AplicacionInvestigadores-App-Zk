@@ -1,0 +1,26 @@
+<!-- vista de la cabezera del proyecto-->
+
+<borderlayout  vflex="min" hflex="max"> 
+            	<center>
+            		<grid>
+            			<rows>
+            				<row>
+            					Nombre Proyecto:
+            					<textbox
+            					id="nombreProyecto"
+            					value="@bind(vm.nombreProyecto)"
+            					constraint="no empty"/>
+            				</row> 
+            				<row>
+            					Descripcion del Proyecto:
+            					<textbox
+            					id="descripcion"
+            					rows="2" hflex="1" 
+            					value="@bind(vm.descripcion)"
+            					constraint="no empty"/>
+            				</row>
+            					
+            			</rows>
+            		</grid>
+            	</center>
+  </borderlayout>

@@ -1,0 +1,141 @@
+
+<window id="winInterfaceVariable" 
+apply="org.zkoss.bind.BindComposer" 
+viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.InnterfaceVariableControl')"
+>    
+	
+<borderlayout  vflex="min" hflex="min"> 
+			  <center>
+            		<grid>
+            			<rows>
+            				<row>
+            					Nombre Interfaz:
+            					<textbox
+            					id="nombreProyecto"
+            					value="ww"
+            					constraint="no empty"/>
+            				</row> 
+            				<row>
+            					Descripcion del Interfaz:
+            					<textbox
+            					id="descripcion"
+            					rows="2" hflex="1" 
+            					value="ww"
+            					constraint="no empty"/>
+            				</row>
+            					
+            			</rows>
+            		</grid>
+            	</center>
+           	     
+  </borderlayout>
+  
+  <separator orient="horizontal" spacing="8px" />
+  
+  <hlayout>
+         <listbox id="listboxenunciado" height="400px" width="200px"
+                  onDrop="move(event.dragged)" 
+                  droppable="false" 
+                  oddRowSclass="non-odd"
+                  model="@bind(vm.enunciadoCamopos)">
+            <listhead>
+				<listheader label="Enunciado" sort="auto" />
+			</listhead>
+			<template name="model">
+	            <listitem draggable="true" 
+	            		  droppable="false" 
+	            		  onDrop="move(event.dragged)" 
+	            		  >
+	                <listcell src="/widgets/effects/drag_n_drop/img/document.png" label="@load(each.enunciado)" />
+	            </listitem>	         
+       		</template>
+       		
+       		<listfoot>
+            <listfooter>
+            	 <hlayout hflex="1" vflex="1">
+                	<textbox value="@bind(vm.txtBuscar)" hflex="1" vflex="1"></textbox>
+                	<button label="Buscar!" iconSclass="z-icon-search" onClick="@command('buscar')" />
+            	 </hlayout>
+            </listfooter>
+            
+        </listfoot>
+        </listbox>
+    
+        
+        
+	<vlayout>
+		<hlayout>
+		<toolbarbutton label="Agregar Variable"    iconSclass="z-icon-plus" onClick="@command('addvariable')"/>
+		<toolbarbutton label="Quitar Variable"   iconSclass="z-icon-minus"  onClick="@command('quitarvariable')"  />
+		</hlayout>
+			<!--lista de Variables Campos  -->
+			<listbox hflex="min" vflex="1" height="371px"
+             droppable="true"
+             model="@bind(vm.camposlist)"
+             selectedItem="@bind(vm.campoSeleccionado)"
+             >
+				<listhead>
+					<listheader label="Enunciado"  />
+					<listheader label="Descripcion"  />
+					<listheader label="Componente"  />
+					<listheader label="Respuesta"  />
+				</listhead>
+				<template name="model">
+	            <listitem draggable="true" 
+	            		  droppable="false" 
+	            		  onDrop="move(event.dragged)" 
+	            		  >
+	                <listcell  label="@load(each.enunciadoCampo.enunciado)" />
+	                <listcell  label="@load(each.detalle)" />
+	                <listcell  label="@load(each.componente.componente)" />
+	                <listcell  label="@load(each.numeroCampo)" />
+	            </listitem>	         
+       		</template>	
+			</listbox>
+	</vlayout>	
+		        
+        <separator orient="vertical" spacing="8px" />
+  
+         <listbox id="listboxcomponente" height="400px" width="200px"
+                  onDrop="move(event.dragged)" 
+                  droppable="false" 
+                  oddRowSclass="non-odd"
+                  model="@bind(vm.componentes)">
+            <listhead>
+				<listheader label="Componentes" sort="auto" />
+			</listhead>
+			<template name="model">
+	            <listitem draggable="true" 
+	            		  droppable="false" 
+	            		  onDrop="move(event.dragged)" 
+	            		  >
+	                <listcell src="/widgets/effects/drag_n_drop/img/document.png" label="@load(each.componente)" />
+	            </listitem>	         
+       		</template>
+        </listbox>
+        
+    </hlayout>
+ 
+    
+    <zscript><![CDATA[
+        void move(Component dragged) {
+        	
+            if (self instanceof Listitem) {
+                self.parent.insertBefore(dragged, self);
+            } else {
+                self.appendChild(dragged);
+            }
+            
+        }
+        
+       
+    ]]></zscript>
+  
+ 
+
+  
+  <hlayout>
+			<button id="grabar" label="Grabar" iconSclass="z-icon-save"   />
+			<button id="salir"  label="Salir"  iconSclass="z-icon-sign-out" onClick="@command('salir', ventana=winInterfaceVariable)" />
+	</hlayout>	
+</window>

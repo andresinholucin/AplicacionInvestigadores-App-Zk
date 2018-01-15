@@ -1,0 +1,48 @@
+<!-- vista de la cabezera de Interface-->
+<zk>
+<toolbar>
+		<toolbarbutton label="Agregar Interface"    iconSclass="z-icon-plus" id="addinterface"  />
+		<toolbarbutton label="Quitar Interface"   iconSclass="z-icon-minus"    />
+		<separator orient="vertical" width="50px" />		
+</toolbar>
+
+<hlayout hflex="max" vflex="max" style="padding:10px">
+
+ 	<listbox hflex="1" vflex="1">
+	<listhead>
+		<listheader label="Nombre Inteface" sort="auto" />
+		<listheader label="Descripcion" sort="auto" />
+	</listhead>
+	<listitem>
+		<listcell label="aa" />
+		<listcell label="aa" />
+	</listitem>
+	<listitem>
+		<listcell label="bb" />
+		<listcell label="bb" />
+	</listitem>
+	</listbox>
+
+ 
+ 	<listbox hflex="1" vflex="1">
+	<listhead>
+		<listheader label="Variable" sort="auto" />
+		<listheader label="Descripcion" sort="auto" />
+		<listheader label="Componente" sort="auto" />
+	</listhead>
+	<listitem>
+		<listcell label="a" />
+		<listcell label="a" />
+		<listcell label="a" />
+	</listitem>
+	<listitem>
+		<listcell label="b" />
+		<listcell label="b" />
+		<listcell label="b" />
+	</listitem>
+	</listbox>
+
+ </hlayout>
+
+
+</zk>
