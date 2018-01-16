@@ -37,16 +37,20 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
                   onDrop="move(event.dragged)" 
                   droppable="false" 
                   oddRowSclass="non-odd"
-                  model="@bind(vm.enunciadoCamopos)">
+                  model="@bind(vm.enunciadoCamopos)"
+                  selectedItem="@bind(vm.enunciadoCampoSeleccionado)"
+             	  onSelect="@command('seleccionarEnunciadoCampo')"
+             	  
+                  emptyMessage="No se ha Encontrado Resultados">
             <listhead>
 				<listheader label="Enunciado" sort="auto" />
 			</listhead>
 			<template name="model">
 	            <listitem draggable="true" 
-	            		  droppable="false" 
-	            		  onDrop="move(event.dragged)" 
+	            		  droppable="false"
+	            		  
 	            		  >
-	                <listcell src="/widgets/effects/drag_n_drop/img/document.png" label="@load(each.enunciado)" />
+	                <listcell onClick="@command('seleccionarEnunciadoCampo')" src="/widgets/effects/drag_n_drop/img/document.png" label="@load(each.enunciado)" />
 	            </listitem>	         
        		</template>
        		
@@ -69,7 +73,7 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 		<toolbarbutton label="Quitar Variable"   iconSclass="z-icon-minus"  onClick="@command('quitarvariable')"  />
 		</hlayout>
 			<!--lista de Variables Campos  -->
-			<listbox hflex="min" vflex="1" height="371px"
+			<listbox hflex="min" vflex="1" height="371px" id="listboxcampos"
              droppable="true"
              model="@bind(vm.camposlist)"
              selectedItem="@bind(vm.campoSeleccionado)"
@@ -82,13 +86,26 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 				</listhead>
 				<template name="model">
 	            <listitem draggable="true" 
-	            		  droppable="false" 
-	            		  onDrop="move(event.dragged)" 
-	            		  >
-	                <listcell  label="@load(each.enunciadoCampo.enunciado)" />
-	                <listcell  label="@load(each.detalle)" />
-	                <listcell  label="@load(each.componente.componente)" />
-	                <listcell  label="@load(each.numeroCampo)" />
+	            		  droppable="true" 
+	            		  onDrop="@command('mover', dComponent=event.dragged)" >
+	            		  
+	                <listcell label="@bind(each.enunciadoCampo.enunciado)" >
+	                	<!-- 
+	                	 <textbox value="@bind(each.enunciadoCampo.enunciado)" hflex="1"> </textbox>
+	               -->
+	               
+	                </listcell>
+	                <listcell  label="@bind(each.detalle)" >
+	                	<textbox rows="2" hflex="1" />
+	                </listcell>
+	                <listcell  label="@bind(each.componente.componente)">
+	                	<textbox value="@bind(each.componente.componente)" hflex="1"> </textbox>
+	                </listcell>
+	                <listcell  label="@bind(each.numeroCampo)" >
+	                	<listbox>
+	                	
+	                	</listbox>
+	                </listcell>
 	            </listitem>	         
        		</template>	
 			</listbox>
@@ -106,7 +123,7 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 			</listhead>
 			<template name="model">
 	            <listitem draggable="true" 
-	            		  droppable="false" 
+	            		  droppable="true" 
 	            		  onDrop="move(event.dragged)" 
 	            		  >
 	                <listcell src="/widgets/effects/drag_n_drop/img/document.png" label="@load(each.componente)" />
@@ -122,10 +139,12 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
         	
             if (self instanceof Listitem) {
                 self.parent.insertBefore(dragged, self);
+                
             } else {
                 self.appendChild(dragged);
             }
-            
+            System.out.println(dragged);
+            System.out.println(dragged.getChildren().get(0));
         }
         
        
@@ -137,5 +156,6 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
   <hlayout>
 			<button id="grabar" label="Grabar" iconSclass="z-icon-save"   />
 			<button id="salir"  label="Salir"  iconSclass="z-icon-sign-out" onClick="@command('salir', ventana=winInterfaceVariable)" />
+		
 	</hlayout>	
 </window>

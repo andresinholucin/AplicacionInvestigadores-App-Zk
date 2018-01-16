@@ -9,6 +9,8 @@ import org.springframework.web.client.RestTemplate;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Window;
 
 import ec.edu.upse.proyinv.modelo.Campo;
@@ -35,6 +37,7 @@ public class InnterfaceVariableControl {
 	
 	@Setter List<EnunciadoCampo> enunciadoCamopos;
 	ArrayList<EnunciadoCampo> enunciadoCampoarraylist = new ArrayList<EnunciadoCampo>();
+	@Getter @Setter private EnunciadoCampo enunciadoCampoSeleccionado;
 	
 	/*
 	 * invocar lista de variables comunes (enunciados) al web service y llenar en el list box
@@ -89,20 +92,11 @@ public class InnterfaceVariableControl {
 	 * 
 	 */
 	
-	private List<Campo> camposlist;
+	@Getter @Setter private List<Campo> camposlist;
 	
 	ArrayList<Campo> campoArrayList= new ArrayList<Campo>();
-	@Getter @Setter private Campo nuevoCampo;
+	@Getter @Setter private Campo nuevoCampo=new Campo();
 	@Getter @Setter private Campo campoSeleccionado;
-
-
-	public List<Campo> getCamposlist() {
-		return camposlist;
-	}
-
-	public void setCamposlist(List<Campo> camposlist) {
-		this.camposlist = camposlist;
-	}
 
 	
 	/*
@@ -128,7 +122,7 @@ public class InnterfaceVariableControl {
 		
 		setCamposlist(campoArrayList);
 			
-		System.out.println(camposlist.size());
+		//System.out.println(camposlist.size());
 		//getCamposlist();
 	}
 	/*
@@ -140,7 +134,7 @@ public class InnterfaceVariableControl {
 		System.out.println("quitar");
 		int ultimo;
 		ultimo =camposlist.size();
-		System.out.println(ultimo);
+		//System.out.println(ultimo);
 		camposlist.remove(ultimo-1);
 	}
 	
@@ -174,7 +168,34 @@ public class InnterfaceVariableControl {
 	
 	
 	
+	/*
+	 * mover un elemento de la lista enunciadoCampo o componente a la lista de campo
+	 */
+	@Command
+	@NotifyChange("camposlist")
+	public void mover(@BindingParam("dComponent") Component dComponent){
+		
+		//System.out.println("arrastraste");
+		//System.out.println(enunciadoCampoSeleccionado.getEnunciado());
+		
+		//extraer el ultimo
+		int inde;
+		inde =camposlist.size()-1;
+		System.out.println(inde);
+		
+		nuevoCampo.setEnunciadoCampo(enunciadoCampoSeleccionado);;
+		
+		camposlist.set(inde, nuevoCampo);
+		
+		
+		
+	}
 	
+	
+	@Command
+	public void seleccionarEnunciadoCampo(){
+		//System.out.println("aqui");
+	}
 	
 	
 	/*
