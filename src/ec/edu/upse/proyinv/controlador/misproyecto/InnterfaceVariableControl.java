@@ -24,10 +24,7 @@ public class InnterfaceVariableControl {
 	
 	Conexion con= new Conexion();
 	@Getter @Setter private String txtBuscar;
-	
-	
-	
-	
+
 	/*
 	 * 
 	 * //para el tratamiento de la lista de los enunciados
@@ -68,8 +65,6 @@ public class InnterfaceVariableControl {
 			
 			return result;
 		}
-			
-		
 		} catch (Exception e) {
 			System.out.println(e);
 			// TODO: handle exception
@@ -92,7 +87,7 @@ public class InnterfaceVariableControl {
 	 * 
 	 */
 	
-	@Getter @Setter private List<Campo> camposlist;
+	@Getter @Setter private List<Campo> camposlist=new ArrayList<>();
 	
 	ArrayList<Campo> campoArrayList= new ArrayList<Campo>();
 	@Getter @Setter private Campo nuevoCampo=new Campo();
@@ -109,40 +104,59 @@ public class InnterfaceVariableControl {
 	@NotifyChange("camposlist")
 	public void addvariable(){
 		System.out.println("agregar");
-		
+		/*
 		Campo c= new Campo();
 		Componente co=new Componente();
 		EnunciadoCampo ec= new EnunciadoCampo();
-		/*co.setComponente("componente");
-		ec.setEnunciado("NOmbre");
-		c.setNombreCampo("a");*/
 		c.setComponente(co);
 		c.setEnunciadoCampo(ec);
 		campoArrayList.add(c);
-		
-		setCamposlist(campoArrayList);
+		setCamposlist(campoArrayList);*/
+		camposlist.add(nuevoCampo);
 			
-		//System.out.println(camposlist.size());
-		//getCamposlist();
+
 	}
+	
 	/*
 	 * quitar variable
 	 */
 	@Command
 	@NotifyChange("camposlist")
 	public void quitarvariable(){
-		System.out.println("quitar");
-		int ultimo;
-		ultimo =camposlist.size();
-		//System.out.println(ultimo);
-		camposlist.remove(ultimo-1);
+		if(ultimoregistro()>=0){
+			camposlist.remove(ultimoregistro());
+		}
+		
 	}
 	
+	/*
+	 * mover un elemento de la lista enunciadoCampo o componente a la lista de campo
+	 */
+	@Command
+	@NotifyChange("camposlist")
+	public void mover(@BindingParam("dComponent") Component dComponent){
+		nuevoCampo.setEnunciadoCampo(enunciadoCampoSeleccionado);;	
+		camposlist.set(ultimoregistro(), nuevoCampo);	
+	}
 	
+	@Command
+	public void clickEnunciadoCampo(){
+	}
 	
-	
+	@Command
+	@NotifyChange("camposlist")
+	public void doubleclickEnunciadoCampo(){
+		if(validacion()==true){
+			nuevoCampo.setEnunciadoCampo(enunciadoCampoSeleccionado);;	
+			camposlist.set(ultimoregistro(), nuevoCampo);	
+		}
+		
+	}
 	
 	//para el tratamiento de la lista de componentes
+	
+	@Getter @Setter private Componente componenteSelecionado;
+	
 	/*
 	 * invocar lista de componentes al web service y llenar
 	 */
@@ -166,38 +180,18 @@ public class InnterfaceVariableControl {
 		}
 	}
 	
+	@Command
+	public void clickComponente(){
+		System.out.println(componenteSelecionado.getComponente());
+	}
 	
-	
-	/*
-	 * mover un elemento de la lista enunciadoCampo o componente a la lista de campo
-	 */
 	@Command
 	@NotifyChange("camposlist")
-	public void mover(@BindingParam("dComponent") Component dComponent){
-		
-		//System.out.println("arrastraste");
-		//System.out.println(enunciadoCampoSeleccionado.getEnunciado());
-		
-		//extraer el ultimo
-		int inde;
-		inde =camposlist.size()-1;
-		System.out.println(inde);
-		
-		nuevoCampo.setEnunciadoCampo(enunciadoCampoSeleccionado);;
-		
-		camposlist.set(inde, nuevoCampo);
-		
-		
-		
+	public void doubleclickComponente(){
+		//System.out.println(componenteSelecionado.getComponente());
+		nuevoCampo.setComponente(componenteSelecionado);
+		camposlist.set(ultimoregistro(), nuevoCampo);	
 	}
-	
-	
-	@Command
-	public void seleccionarEnunciadoCampo(){
-		//System.out.println("aqui");
-	}
-	
-	
 	/*
 	 *salir y regresar pantalla anterior 
 	 */
@@ -206,8 +200,28 @@ public class InnterfaceVariableControl {
 		ventana.detach();
 	}
 
-
+	public int ultimoregistro(){
+		int inde;
+		inde =camposlist.size()-1;
+		return inde;
+	}
 	
+	public boolean validacion(){
+		System.out.println(camposlist.size());
+		if (camposlist.isEmpty() || camposlist==null || camposlist.size()==0){
+			System.out.println("agrega un campo");
+			return false;
+		}else if(camposlist.size()<0){
+			camposlist.clear();
+			return false;
+		}else return true;
+	}
 	
+	@Command
+	public void ver(){
+		for (Campo campo : camposlist) {
+			System.out.println(campo.getComponente().getComponente());
+		}
+	}
 	
 }

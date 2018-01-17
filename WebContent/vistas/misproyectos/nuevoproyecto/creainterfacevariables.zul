@@ -39,8 +39,6 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
                   oddRowSclass="non-odd"
                   model="@bind(vm.enunciadoCamopos)"
                   selectedItem="@bind(vm.enunciadoCampoSeleccionado)"
-             	  onSelect="@command('seleccionarEnunciadoCampo')"
-             	  
                   emptyMessage="No se ha Encontrado Resultados">
             <listhead>
 				<listheader label="Enunciado" sort="auto" />
@@ -50,7 +48,10 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 	            		  droppable="false"
 	            		  
 	            		  >
-	                <listcell onClick="@command('seleccionarEnunciadoCampo')" src="/widgets/effects/drag_n_drop/img/document.png" label="@load(each.enunciado)" />
+	                <listcell onClick="@command('clickEnunciadoCampo')" 
+	                		  onDoubleClick="@command('doubleclickEnunciadoCampo')"
+	                		  src="/widgets/effects/drag_n_drop/img/document.png" 
+	                		  label="@load(each.enunciado)" />
 	            </listitem>	         
        		</template>
        		
@@ -71,6 +72,7 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 		<hlayout>
 		<toolbarbutton label="Agregar Variable"    iconSclass="z-icon-plus" onClick="@command('addvariable')"/>
 		<toolbarbutton label="Quitar Variable"   iconSclass="z-icon-minus"  onClick="@command('quitarvariable')"  />
+		<toolbarbutton label="Ver Formulario"   iconSclass="z-icon-home"  onClick="@command('ver')"  />
 		</hlayout>
 			<!--lista de Variables Campos  -->
 			<listbox hflex="min" vflex="1" height="371px" id="listboxcampos"
@@ -90,22 +92,18 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 	            		  onDrop="@command('mover', dComponent=event.dragged)" >
 	            		  
 	                <listcell label="@bind(each.enunciadoCampo.enunciado)" >
-	                	<!-- 
-	                	 <textbox value="@bind(each.enunciadoCampo.enunciado)" hflex="1"> </textbox>
-	               -->
-	               
 	                </listcell>
+	                
 	                <listcell  label="@bind(each.detalle)" >
 	                	<textbox rows="2" hflex="1" />
 	                </listcell>
+	                
 	                <listcell  label="@bind(each.componente.componente)">
-	                	<textbox value="@bind(each.componente.componente)" hflex="1"> </textbox>
 	                </listcell>
+	                
 	                <listcell  label="@bind(each.numeroCampo)" >
-	                	<listbox>
-	                	
-	                	</listbox>
 	                </listcell>
+	                
 	            </listitem>	         
        		</template>	
 			</listbox>
@@ -117,7 +115,8 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
                   onDrop="move(event.dragged)" 
                   droppable="false" 
                   oddRowSclass="non-odd"
-                  model="@bind(vm.componentes)">
+                  model="@bind(vm.componentes)"
+                  selectedItem="@bind(vm.componenteSelecionado)" >
             <listhead>
 				<listheader label="Componentes" sort="auto" />
 			</listhead>
@@ -126,7 +125,11 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 	            		  droppable="true" 
 	            		  onDrop="move(event.dragged)" 
 	            		  >
-	                <listcell src="/widgets/effects/drag_n_drop/img/document.png" label="@load(each.componente)" />
+	                <listcell src="@load(each.img)"
+	                		   
+	                		  label="@load(each.componente)"
+	                		  onClick="@command('clickComponente')"
+	                		  onDoubleClick="@command('doubleclickComponente')"/>
 	            </listitem>	         
        		</template>
         </listbox>
