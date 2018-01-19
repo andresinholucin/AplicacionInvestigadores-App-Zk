@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,6 +54,7 @@ public class Campo implements Serializable {
 	//bi-directional many-to-one association to Interfaz
 	@ManyToOne
 	@JoinColumn(name="id_interfaz")
+	@JsonIgnore
 	@Getter @Setter private Interfaz interfaz;
 
 	//bi-directional many-to-one association to Dato

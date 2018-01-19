@@ -1,21 +1,31 @@
 package ec.edu.upse.proyinv.controlador.misproyecto;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.ss.formula.functions.Replace;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zul.Listbox;
+import org.zkoss.zk.ui.Execution;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Window;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 import ec.edu.upse.proyinv.modelo.Campo;
 import ec.edu.upse.proyinv.modelo.Componente;
 import ec.edu.upse.proyinv.modelo.EnunciadoCampo;
+import ec.edu.upse.proyinv.modelo.Interfaz;
 import ec.edu.upse.proyinv.modelo.auxiliares.Conexion;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +34,9 @@ public class InnterfaceVariableControl {
 	
 	Conexion con= new Conexion();
 	@Getter @Setter private String txtBuscar;
+	
+	@Getter @Setter private Interfaz interfaz=new Interfaz();
+	
 
 	/*
 	 * 
@@ -58,7 +71,8 @@ public class InnterfaceVariableControl {
 		}else{
 			List<EnunciadoCampo> result =new ArrayList<EnunciadoCampo>();
 				for(EnunciadoCampo ec: enunciadoCampoarraylist  ){
-					if (ec.getEnunciado().toLowerCase().contains(txtBuscar.toLowerCase())){
+					if (ec.getEnunciado().toLowerCase().contains(txtBuscar.toLowerCase())
+						|| ec.getTipoVariable().getTipoVariable().toLowerCase().contains(txtBuscar.toLowerCase())){
 							result.add(ec);
 						}
 				}
@@ -90,31 +104,22 @@ public class InnterfaceVariableControl {
 	@Getter @Setter private List<Campo> camposlist=new ArrayList<>();
 	
 	ArrayList<Campo> campoArrayList= new ArrayList<Campo>();
-	@Getter @Setter private Campo nuevoCampo=new Campo();
+	@Getter @Setter private Campo nuevoCampo;
 	@Getter @Setter private Campo campoSeleccionado;
 
+	@Getter @Setter private Integer filaActiva;
 	
 	/*
 	 * boton agragar variable
 	 * este boton solo crea una fila en el registro
 	 */
-
-
 	@Command
 	@NotifyChange("camposlist")
 	public void addvariable(){
-		System.out.println("agregar");
-		/*
-		Campo c= new Campo();
-		Componente co=new Componente();
-		EnunciadoCampo ec= new EnunciadoCampo();
-		c.setComponente(co);
-		c.setEnunciadoCampo(ec);
-		campoArrayList.add(c);
-		setCamposlist(campoArrayList);*/
+		//System.out.println("agregar");
+		nuevoCampo = new Campo();
 		camposlist.add(nuevoCampo);
-			
-
+		campoSeleccionado=null;
 	}
 	
 	/*
@@ -140,16 +145,23 @@ public class InnterfaceVariableControl {
 	}
 	
 	@Command
-	public void clickEnunciadoCampo(){
-	}
+	public void clickEnunciadoCampo(){}
 	
 	@Command
 	@NotifyChange("camposlist")
 	public void doubleclickEnunciadoCampo(){
-		if(validacion()==true){
-			nuevoCampo.setEnunciadoCampo(enunciadoCampoSeleccionado);;	
-			camposlist.set(ultimoregistro(), nuevoCampo);	
+		if(campoSeleccionado==null){
+			if(validacion()==true){
+				nuevoCampo.setEnunciadoCampo(enunciadoCampoSeleccionado);;	
+				camposlist.set(ultimoregistro(), nuevoCampo);	
+			}
+		}else{
+			if(validacion()==true){
+				campoSeleccionado.setEnunciadoCampo(enunciadoCampoSeleccionado);
+				
+			}
 		}
+		
 		
 	}
 	
@@ -181,17 +193,23 @@ public class InnterfaceVariableControl {
 	}
 	
 	@Command
-	public void clickComponente(){
-		System.out.println(componenteSelecionado.getComponente());
-	}
+	public void clickComponente(){}
 	
 	@Command
 	@NotifyChange("camposlist")
 	public void doubleclickComponente(){
 		//System.out.println(componenteSelecionado.getComponente());
-		nuevoCampo.setComponente(componenteSelecionado);
-		camposlist.set(ultimoregistro(), nuevoCampo);	
+		if(campoSeleccionado==null){
+			if(validacion()==true){
+			nuevoCampo.setComponente(componenteSelecionado);
+			camposlist.set(ultimoregistro(), nuevoCampo);}	
+		}else{
+			if(validacion()==true){
+				campoSeleccionado.setComponente(componenteSelecionado);
+			}
+		}
 	}
+	
 	/*
 	 *salir y regresar pantalla anterior 
 	 */
@@ -202,14 +220,19 @@ public class InnterfaceVariableControl {
 
 	public int ultimoregistro(){
 		int inde;
-		inde =camposlist.size()-1;
+		if(camposlist.size()==0){
+			return 0;
+		}else{
+			inde =camposlist.size()-1;
+		}
 		return inde;
 	}
 	
 	public boolean validacion(){
-		System.out.println(camposlist.size());
+		//System.out.println(camposlist.size());
 		if (camposlist.isEmpty() || camposlist==null || camposlist.size()==0){
 			System.out.println("agrega un campo");
+			Clients.showNotification("Agrega y Edita un Campo");
 			return false;
 		}else if(camposlist.size()<0){
 			camposlist.clear();
@@ -218,10 +241,30 @@ public class InnterfaceVariableControl {
 	}
 	
 	@Command
-	public void ver(){
+	public void ver() throws IOException{
 		for (Campo campo : camposlist) {
-			System.out.println(campo.getComponente().getComponente());
+			System.out.println(campo.getEnunciadoCampo().getEnunciado());
 		}
+		
+		String url="/vistas/misproyectos/nuevoproyecto/verformulario.zul";
+		interfaz.setCampos(camposlist);
+		
+		/*
+		ObjectMapper mapper = new ObjectMapper();
+		  
+		String json = mapper.writerWithDefaultPrettyPrinter()
+		                    .writeValueAsString(interfaz);
+		*/
+		final Gson gson= new Gson();
+		String json=gson.toJson(interfaz);
+		System.out.println(json);
+	
+		String urljson=url+"?myId="+json;
+		urljson=urljson.replace("\"", "$");
+		urljson=urljson.replace(" ", "&");
+		Executions.getCurrent().sendRedirect(urljson,"_blank");
+		
+		//Executions.getCurrent().forward("/vistas/misproyectos/nuevoproyecto/new_file.zul");
 	}
 	
 }

@@ -1,0 +1,11 @@
+<?page title="Mi Formulario" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="new page title" border="normal"
+apply="org.zkoss.bind.BindComposer" 
+viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.VerFormularioControl')"
+>
+
+<label value="@bind(vm.valor)" />
+
+</window>
+</zk>

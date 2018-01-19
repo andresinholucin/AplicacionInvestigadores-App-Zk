@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -37,4 +39,9 @@ public class EnunciadoCampo implements Serializable {
 	//bi-directional many-to-one association to Campo
 	@OneToMany(mappedBy="enunciadoCampo")
 	@Getter @Setter private List<Campo> campo;
+	
+	//bi-directional many-to-one association to TipoVariable
+	@ManyToOne
+	@JoinColumn(name="id_tipo_variable")
+	@Getter @Setter private TipoVariable tipoVariable;
 }

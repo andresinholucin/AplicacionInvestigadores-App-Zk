@@ -2,6 +2,7 @@
 <window id="winInterfaceVariable" 
 apply="org.zkoss.bind.BindComposer" 
 viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.InnterfaceVariableControl')"
+
 >    
 	
 <borderlayout  vflex="min" hflex="min"> 
@@ -12,7 +13,7 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
             					Nombre Interfaz:
             					<textbox
             					id="nombreProyecto"
-            					value="ww"
+            					value="@bind(vm.interfaz.nombreinterfaz)"
             					constraint="no empty"/>
             				</row> 
             				<row>
@@ -20,7 +21,7 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
             					<textbox
             					id="descripcion"
             					rows="2" hflex="1" 
-            					value="ww"
+            					value="@bind(vm.interfaz.descripcion)"
             					constraint="no empty"/>
             				</row>
             					
@@ -32,16 +33,18 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
   
   <separator orient="horizontal" spacing="8px" />
   
-  <hlayout>
+  <hlayout vflex="1">
          <listbox id="listboxenunciado" height="400px" width="200px"
                   onDrop="move(event.dragged)" 
                   droppable="false" 
                   oddRowSclass="non-odd"
+                  multiple="true" rows="8"
                   model="@bind(vm.enunciadoCamopos)"
                   selectedItem="@bind(vm.enunciadoCampoSeleccionado)"
                   emptyMessage="No se ha Encontrado Resultados">
             <listhead>
 				<listheader label="Enunciado" sort="auto" />
+				<listheader label="Tipo de Variable" sort="auto" />
 			</listhead>
 			<template name="model">
 	            <listitem draggable="true" 
@@ -52,17 +55,23 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 	                		  onDoubleClick="@command('doubleclickEnunciadoCampo')"
 	                		  src="/widgets/effects/drag_n_drop/img/document.png" 
 	                		  label="@load(each.enunciado)" />
-	            </listitem>	         
+	                		  
+	                 <listcell label="@load(each.tipoVariable.tipoVariable)"
+	                		   onDoubleClick="@command('doubleclickEnunciadoCampo')">
+	                 
+	                 </listcell>
+	            </listitem>	 
+	            
+	                    
        		</template>
        		
        		<listfoot>
-            <listfooter>
-            	 <hlayout hflex="1" vflex="1">
+            	<listfooter>
                 	<textbox value="@bind(vm.txtBuscar)" hflex="1" vflex="1"></textbox>
-                	<button label="Buscar!" iconSclass="z-icon-search" onClick="@command('buscar')" />
-            	 </hlayout>
-            </listfooter>
-            
+              	</listfooter>
+            	<listfooter>
+            		<button label="Buscar!" iconSclass="z-icon-search" onClick="@command('buscar')" />
+            	</listfooter>
         </listfoot>
         </listbox>
     
@@ -72,11 +81,13 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 		<hlayout>
 		<toolbarbutton label="Agregar Variable"    iconSclass="z-icon-plus" onClick="@command('addvariable')"/>
 		<toolbarbutton label="Quitar Variable"   iconSclass="z-icon-minus"  onClick="@command('quitarvariable')"  />
-		<toolbarbutton label="Ver Formulario"   iconSclass="z-icon-home"  onClick="@command('ver')"  />
+		<toolbarbutton label="Ver Formulario"   iconSclass="z-icon-home"  onClick="@command('ver')" target="_blank"  />
 		</hlayout>
 			<!--lista de Variables Campos  -->
-			<listbox hflex="min" vflex="1" height="371px" id="listboxcampos"
+			<listbox width="400px" height="371px" id="listboxcampos"
              droppable="true"
+             oddRowSclass="non-odd"
+             multiple="true" rows="8"
              model="@bind(vm.camposlist)"
              selectedItem="@bind(vm.campoSeleccionado)"
              >
