@@ -43,6 +43,7 @@ public class Interfaz implements Serializable {
 
 	//bi-directional many-to-one association to Campo
 	@OneToMany(mappedBy="interfaz")
+	//@JsonIgnore
 	@Getter @Setter private List<Campo> campos;
 
 	//bi-directional many-to-one association to Interfaz
@@ -60,14 +61,6 @@ public class Interfaz implements Serializable {
 	@OneToMany(mappedBy="interfaz")
 	@JsonIgnore
 	@Getter @Setter private List<InterfazProyecto> interfazProyectos;
-
-	@Override
-	public String toString() {
-		return "Interfaz [idInterfaz=" + idInterfaz + ", descripcion=" + descripcion + ", estado=" + estado
-				+ ", nombreinterfaz=" + nombreinterfaz + ", campos=" + campos + ", interfaz=" + interfaz
-				+ ", interfazs=" + interfazs + ", interfazProyectos=" + interfazProyectos + "]";
-	}
-
 
 	
 

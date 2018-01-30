@@ -8,7 +8,7 @@
             					Nombre Proyecto:
             					<textbox
             					id="nombreProyecto"
-            					value="@bind(vm.nombreProyecto)"
+            					value=""
             					constraint="no empty"/>
             				</row> 
             				<row>
@@ -16,7 +16,7 @@
             					<textbox
             					id="descripcion"
             					rows="2" hflex="1" 
-            					value="@bind(vm.descripcion)"
+            					value=""
             					constraint="no empty"/>
             				</row>
             					

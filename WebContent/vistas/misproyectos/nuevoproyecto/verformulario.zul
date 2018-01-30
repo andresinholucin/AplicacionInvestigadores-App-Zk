@@ -1,11 +1,19 @@
-<?page title="Mi Formulario" contentType="text/html;charset=UTF-8"?>
-<zk>
-<window title="new page title" border="normal"
-apply="org.zkoss.bind.BindComposer" 
-viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.VerFormularioControl')"
->
 
-<label value="@bind(vm.valor)" />
+
+
+<window id="ventanaVerFormulario"
+		title="new page title" border="normal" 
+		apply="org.zkoss.bind.BindComposer" 
+		viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.VerFormularioControl')">
+		
+<hlayout>
+		<toolbarbutton label="Agregar boton"    iconSclass="z-icon-plus" onClick="@command('addboton')"/>
+		<toolbarbutton label="agregar labeñ"   iconSclass="z-icon-minus"  onClick="@command('addetiqueta')"  />
+		<toolbarbutton label="agregar caja de texto"   iconSclass="z-icon-home"  onClick="@command('addtextbox')"/>
+		<toolbarbutton label="Agregar combo"    iconSclass="z-icon-plus" onClick="@command('addcombo')"/>
+		<toolbarbutton label="agregar radio"   iconSclass="z-icon-minus"  onClick="@command('addradio')"  />
+		<toolbarbutton label="agregar checkbox"   iconSclass="z-icon-home"  onClick="@command('addcheckbox')"/>
+</hlayout>
+
 
 </window>
-</zk>

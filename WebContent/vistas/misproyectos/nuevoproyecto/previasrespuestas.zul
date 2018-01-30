@@ -1,0 +1,66 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Agrega Tus Respuestas" border="normal" id="winRespuestaPrevia"
+apply="org.zkoss.bind.BindComposer" 
+viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.PreviaRespuestaControl')"
+hflex="min" vflex="min">    
+
+<hlayout>
+	 <listbox id="listboxenunciado" height="450px" width="200px"
+	 			  checkmark="true" 
+                  onDrop="move(event.dragged)" 
+                  droppable="false" 
+                  oddRowSclass="non-odd"
+                  multiple="true" rows="8"
+                  model="@bind(vm.previarespuestas)"
+                  selectedItems="@bind(vm.respuestasseleccionada)"
+                  emptyMessage="No se ha Encontrado Resultados">
+            <listhead>
+				<listheader label="Respuestas Previas" />
+			</listhead>
+			<template name="model">
+	            <listitem draggable="true" 
+	            		  droppable="false"
+	            		  
+	            		  >
+	                <listcell onClick="@command('clickRespuestasPrevias')" 
+	                		  onDoubleClick="@command('dobleclickRespuestasPrevias')"
+	                		  label="@load(each.previaRespuesta)" />
+	                	            
+	            </listitem>	        
+       		</template>
+       		
+       		<listfoot>
+            	<listfooter>
+                	<textbox  value="@bind(vm.txtAccionPR)" hflex="1" vflex="1"></textbox>
+              	</listfooter>
+            	<listfooter>
+            		<button id="btnrespuesta" label="Buscar!" iconSclass="z-icon-search" onClick="@command('buscar', botonrespuesta=btnrespuesta)" />
+            	</listfooter>
+        </listfoot>
+        </listbox>
+
+	<vlayout>
+		<hlayout>
+ 	
+			<button id="grabar" label="Grabar" iconSclass="z-icon-save"   />
+			<button id="salir"  label="Salir"  iconSclass="z-icon-sign-out" onClick="@command('salir', ventana=winRespuestaPrevia)" />
+		
+			<button id="s" label="Grabar" iconSclass="z-icon-save" onClick="@command('clickmostrarseleccionados')" />
+		</hlayout>	
+		<window id="formulariocampo" border="normal" >
+		
+		</window>
+		
+	</vlayout>
+ 	
+	
+	
+	<vlayout vflex="1" >
+		<iframe src="/vistas/misproyectos/nuevoproyecto/ejemplo.zul"
+		vflex="1" hflex="1"></iframe>
+	</vlayout>
+</hlayout>
+
+</window>
+</zk>

@@ -56,12 +56,4 @@ public class Proyecto implements Serializable {
 	@JsonIgnore
 	@Getter @Setter private List<ProyectosUsuario> proyectosUsuarios;
 
-	@Override
-	public String toString() {
-		return "Proyecto [idProyecto=" + idProyecto + ", descripcion=" + descripcion + ", estado=" + estado
-				+ ", fechaCreacion=" + fechaCreacion + ", proyecto=" + proyecto + ", interfazProyectos="
-				+ interfazProyectos + ", proyectosUsuarios=" + proyectosUsuarios + "]";
-	}
-
-	
 }

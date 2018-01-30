@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -20,29 +18,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="enunciado_campo")
+@Table(name="previa_respuesta")
 @NoArgsConstructor
-public class EnunciadoCampo implements Serializable {
+public class PreviaRespuesta implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_enunciado_campo")
-	@Getter @Setter private Long idEnunciadoCampo;
+	@Column(name="id_previa_respuesta")
+	@Getter @Setter private Long idPreviaRespuesta;
 	
-	@Getter @Setter private String enunciado;
-
-	@Getter @Setter private String img;
-
+	@Column(name="previa_respuesta")
+	@Getter @Setter private String previaRespuesta;
+	
 	@Getter @Setter private String estado;
 	
-	//bi-directional many-to-one association to Campo
-	@OneToMany(mappedBy="enunciadoCampo")
+	//bi-directional many-to-one association to CampoPreviaRespuesta
+	@OneToMany(mappedBy="previaRespuesta")
 	@JsonIgnore
-	@Getter @Setter private List<Campo> campo;
-	
-	//bi-directional many-to-one association to TipoVariable
-	@ManyToOne
-	@JoinColumn(name="id_tipo_variable")
-	@Getter @Setter private TipoVariable tipoVariable;
+	@Getter @Setter private List<CampoPreviaRespuesta> campoPreviaRespuestas;
 }

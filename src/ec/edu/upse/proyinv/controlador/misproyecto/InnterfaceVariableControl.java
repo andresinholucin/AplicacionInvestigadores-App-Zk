@@ -3,20 +3,33 @@ package ec.edu.upse.proyinv.controlador.misproyecto;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.record.PageBreakRecord.Break;
 import org.apache.poi.ss.formula.functions.Replace;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.ContextParam;
+import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Div;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +39,7 @@ import ec.edu.upse.proyinv.modelo.Campo;
 import ec.edu.upse.proyinv.modelo.Componente;
 import ec.edu.upse.proyinv.modelo.EnunciadoCampo;
 import ec.edu.upse.proyinv.modelo.Interfaz;
+import ec.edu.upse.proyinv.modelo.Proyecto;
 import ec.edu.upse.proyinv.modelo.auxiliares.Conexion;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,10 +48,27 @@ public class InnterfaceVariableControl {
 	
 	Conexion con= new Conexion();
 	@Getter @Setter private String txtBuscar;
+	@Getter @Setter private String txtlistarespuesta;
 	
 	@Getter @Setter private Interfaz interfaz=new Interfaz();
 	
-
+	@Wire
+	private Window winInterfaceVariable;
+	
+	@Wire Listcell respuestas;
+	
+	@Wire
+	private Div divrespuesta;
+	
+	
+	Button boton;
+	
+	@AfterCompose
+	public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
+		// Permite enlazar los componentes que se asocian con la anotacion @Wire
+		Selectors.wireComponents(view, this, false);
+	}
+	
 	/*
 	 * 
 	 * //para el tratamiento de la lista de los enunciados
@@ -54,7 +85,6 @@ public class InnterfaceVariableControl {
 	 */
 	public List<EnunciadoCampo> getenunciadoCamopos(){
 		try {
-			
 			
 		if(txtBuscar==null || "".equals(txtBuscar)){
 			
@@ -118,8 +148,10 @@ public class InnterfaceVariableControl {
 	public void addvariable(){
 		//System.out.println("agregar");
 		nuevoCampo = new Campo();
+		nuevoCampo.setNumeroCampo(ultimoregistro()+1);
 		camposlist.add(nuevoCampo);
 		campoSeleccionado=null;
+
 	}
 	
 	/*
@@ -128,8 +160,8 @@ public class InnterfaceVariableControl {
 	@Command
 	@NotifyChange("camposlist")
 	public void quitarvariable(){
-		if(ultimoregistro()>=0){
-			camposlist.remove(ultimoregistro());
+		if(ultimoregistro()>0){
+			camposlist.remove(ultimoregistro()-1);
 		}
 		
 	}
@@ -153,7 +185,7 @@ public class InnterfaceVariableControl {
 		if(campoSeleccionado==null){
 			if(validacion()==true){
 				nuevoCampo.setEnunciadoCampo(enunciadoCampoSeleccionado);;	
-				camposlist.set(ultimoregistro(), nuevoCampo);	
+				camposlist.set(ultimoregistro()-1, nuevoCampo);	
 			}
 		}else{
 			if(validacion()==true){
@@ -202,12 +234,13 @@ public class InnterfaceVariableControl {
 		if(campoSeleccionado==null){
 			if(validacion()==true){
 			nuevoCampo.setComponente(componenteSelecionado);
-			camposlist.set(ultimoregistro(), nuevoCampo);}	
+			camposlist.set(ultimoregistro()-1, nuevoCampo);}	
 		}else{
 			if(validacion()==true){
 				campoSeleccionado.setComponente(componenteSelecionado);
 			}
 		}
+				
 	}
 	
 	/*
@@ -220,10 +253,10 @@ public class InnterfaceVariableControl {
 
 	public int ultimoregistro(){
 		int inde;
-		if(camposlist.size()==0){
+		if(camposlist==null){
 			return 0;
 		}else{
-			inde =camposlist.size()-1;
+			inde =camposlist.size();
 		}
 		return inde;
 	}
@@ -249,12 +282,14 @@ public class InnterfaceVariableControl {
 		String url="/vistas/misproyectos/nuevoproyecto/verformulario.zul";
 		interfaz.setCampos(camposlist);
 		
+		
+		
 		/*
 		ObjectMapper mapper = new ObjectMapper();
 		  
 		String json = mapper.writerWithDefaultPrettyPrinter()
 		                    .writeValueAsString(interfaz);
-		*/
+		
 		final Gson gson= new Gson();
 		String json=gson.toJson(interfaz);
 		System.out.println(json);
@@ -263,8 +298,47 @@ public class InnterfaceVariableControl {
 		urljson=urljson.replace("\"", "$");
 		urljson=urljson.replace(" ", "&");
 		Executions.getCurrent().sendRedirect(urljson,"_blank");
-		
+		*/
 		//Executions.getCurrent().forward("/vistas/misproyectos/nuevoproyecto/new_file.zul");
 	}
 	
+	@Command
+	public void clickllamarPosiblesRespuestas(){
+	
+		
+	}
+	
+	@Command
+	public void dobleclickllamarPosiblesRespuestas(){
+		
+		if(campoSeleccionado==null){
+			Clients.showNotification("Selecciona una Fila");
+			
+		}else if(campoSeleccionado.getComponente().getComponente()==""){
+			Clients.showNotification("Agrege un Componente");
+			
+		}else if(campoSeleccionado.getComponente().getIdComponente()==1 ||
+				campoSeleccionado.getComponente().getIdComponente()==5 ||
+				campoSeleccionado.getComponente().getIdComponente()==6 ||
+				campoSeleccionado.getComponente().getIdComponente()==7){
+			Clients.showNotification("Componente No necesita Respuesta Previa");
+		}
+		
+		else{
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("Campo", campoSeleccionado);
+			System.out.println(campoSeleccionado.toString());
+			Window ventanaCargar = (Window) Executions.createComponents("/vistas/misproyectos/nuevoproyecto/previasrespuestas.zul", null, params);
+			ventanaCargar.doModal();
+		}
+			
+	
+		
+	}
+	
+	@Command
+	public void selecciona(){
+		System.out.println(campoSeleccionado.getDetalle());
+	}
 }

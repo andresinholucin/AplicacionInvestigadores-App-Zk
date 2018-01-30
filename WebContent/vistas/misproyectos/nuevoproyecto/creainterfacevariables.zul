@@ -1,10 +1,13 @@
 
-<window id="winInterfaceVariable" 
-apply="org.zkoss.bind.BindComposer" 
-viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.InnterfaceVariableControl')"
+<?component name="verformulario-Nuevo" extends="div" class="ec.edu.upse.proyinv.controlador.misproyecto.VerFormularioControl"?>
 
->    
-	
+<window id="winInterfaceVariable" 
+		apply="org.zkoss.bind.BindComposer" 
+		viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.InnterfaceVariableControl')">    
+
+<hlayout>
+
+<vlayout>	
 <borderlayout  vflex="min" hflex="min"> 
 			  <center>
             		<grid>
@@ -53,7 +56,7 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 	            		  >
 	                <listcell onClick="@command('clickEnunciadoCampo')" 
 	                		  onDoubleClick="@command('doubleclickEnunciadoCampo')"
-	                		  src="/widgets/effects/drag_n_drop/img/document.png" 
+	                		  src="/img/varios/check-list.png" 
 	                		  label="@load(each.enunciado)" />
 	                		  
 	                 <listcell label="@load(each.tipoVariable.tipoVariable)"
@@ -84,14 +87,16 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 		<toolbarbutton label="Ver Formulario"   iconSclass="z-icon-home"  onClick="@command('ver')" target="_blank"  />
 		</hlayout>
 			<!--lista de Variables Campos  -->
-			<listbox width="400px" height="371px" id="listboxcampos"
+			<listbox width="450px" height="371px" id="listboxcampos"
              droppable="true"
              oddRowSclass="non-odd"
              multiple="true" rows="8"
              model="@bind(vm.camposlist)"
              selectedItem="@bind(vm.campoSeleccionado)"
+           
              >
 				<listhead>
+					<listheader label="N°"  width="10%"/>
 					<listheader label="Enunciado"  />
 					<listheader label="Descripcion"  />
 					<listheader label="Componente"  />
@@ -101,18 +106,33 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 	            <listitem draggable="true" 
 	            		  droppable="true" 
 	            		  onDrop="@command('mover', dComponent=event.dragged)" >
+	            	<listcell label="@bind(each.numeroCampo)">
+	            	
+	            	</listcell>
 	            		  
 	                <listcell label="@bind(each.enunciadoCampo.enunciado)" >
 	                </listcell>
 	                
-	                <listcell  label="@bind(each.detalle)" >
-	                	<textbox rows="2" hflex="1" />
+	                <listcell >
+	                	<textbox rows="2" hflex="1" inplace="true" value="@bind(each.detalle)"/>
 	                </listcell>
+	                
 	                
 	                <listcell  label="@bind(each.componente.componente)">
 	                </listcell>
 	                
-	                <listcell  label="@bind(each.numeroCampo)" >
+	                <listcell onClick="@command('clickllamarPosiblesRespuestas')"
+	                		  
+	                		  onDoubleClick="@command('dobleclickllamarPosiblesRespuestas')">
+	                	
+	                	<listbox>
+	                		<listitem>
+	                			<listcell label="fgvsf"></listcell>
+	                		</listitem>
+	                		
+	                	</listbox>
+	               		
+	                	
 	                </listcell>
 	                
 	            </listitem>	         
@@ -172,4 +192,21 @@ viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.Innterfa
 			<button id="salir"  label="Salir"  iconSclass="z-icon-sign-out" onClick="@command('salir', ventana=winInterfaceVariable)" />
 		
 	</hlayout>	
+</vlayout>
+
+<vlayout>
+
+<window  id="winProyectoNuevo" 
+		 apply="ec.edu.upse.proyinv.controlador.misproyecto.ProyectoNuevoComposer" 
+		 vflex="min" width="600px" >
+	
+    <!-- <iframe id="iframe" src="/vistas/misproyectos/nuevoproyecto/verformulario.zul"
+    width="400px" height="400px"  /> -->
+	
+</window>
+
+
+</vlayout>	
+</hlayout>
+
 </window>

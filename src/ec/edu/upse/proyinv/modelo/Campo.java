@@ -59,6 +59,7 @@ public class Campo implements Serializable {
 
 	//bi-directional many-to-one association to Dato
 	@OneToMany(mappedBy="campo")
+	@JsonIgnore
 	@Getter @Setter private List<Dato> datos;
 
 	//bi-directional many-to-one association to componente
@@ -70,5 +71,19 @@ public class Campo implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_enunciado_campo")
 	@Getter @Setter private EnunciadoCampo enunciadoCampo;
+	
+	//bi-directional many-to-one association to CampoPreviaRespuesta
+	@OneToMany(mappedBy="campo")
+	@Getter @Setter private List<CampoPreviaRespuesta> campoPreviaRespuestas;
+
+	@Override
+	public String toString() {
+		return "Campo [idCampo=" + idCampo + ", detalle=" + detalle + ", estado=" + estado + ", keyLlave=" + keyLlave
+				+ ", nombreCampo=" + nombreCampo + ", numeroCampo=" + numeroCampo + ", tipoDato=" + tipoDato
+				+ ", interfaz=" + interfaz + ", datos=" + datos + ", componente=" + componente + ", enunciadoCampo="
+				+ enunciadoCampo + ", campoPreviaRespuestas=" + campoPreviaRespuestas + "]";
+	}
+
+	
 
 }

@@ -1,0 +1,74 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Formulario" border="normal">
+<listbox width="100%" >
+	<listhead sizable="true">
+		<listheader label="Componente" hflex="1" />
+		<listheader label="Ejemplo" hflex="2"/>
+	</listhead>
+	<listitem>
+		<listcell label="Caja de Texto" />
+		<listcell>
+			<label value="Nombre"></label>
+			<textbox></textbox>
+		</listcell>
+	</listitem>
+	<listitem>
+		<listcell label="Opcion Multiple" />
+		<listcell>
+			<radiogroup>
+				<label value="Sexo: "></label>
+				<radio label="Masculino"/>
+				<radio label="Femenino"/>
+			</radiogroup>
+		</listcell>
+	</listitem>
+	<listitem>
+		<listcell label="Casilla de Verificacion" />
+		<listcell>
+			<label value="Titulo: "></label>
+			<vlayout>
+			<checkbox label="Ingeniero" />
+			<checkbox label="Licenciado" />
+			<checkbox label="Arquitecto" />
+			</vlayout>
+			
+		</listcell>
+	</listitem>
+	<listitem>
+		<listcell label="Lista Desplegable" />
+		<listcell>
+			<label value="Nacionalidad:  "></label>
+			<combobox>
+				<comboitem label="Ecuador"/>
+				<comboitem label="Colombia"/>
+				<comboitem label="Peru"/>
+				<comboitem label="Venezuela"/>
+			</combobox>
+		</listcell>
+	</listitem>
+	<listitem>
+		<listcell label="Escala Lineal" />
+		<listcell>
+			
+		</listcell>
+	</listitem>
+	<listitem>
+		<listcell label="Fecha" />
+		<listcell>
+			 <timebox id="tb0" cols="12" format="short" onCreate="self.value = new Date()" />
+			
+		</listcell>
+	</listitem>
+	<listitem>
+		<listcell label="Hora" />
+		<listcell>
+			
+			<datebox />
+		</listcell>
+	</listitem>
+</listbox>
+
+
+</window>
+</zk>
