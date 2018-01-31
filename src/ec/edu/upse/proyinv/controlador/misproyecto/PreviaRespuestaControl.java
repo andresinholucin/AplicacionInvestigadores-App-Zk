@@ -19,13 +19,17 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
+import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
 import ec.edu.upse.proyinv.modelo.Campo;
@@ -59,22 +63,28 @@ public class PreviaRespuestaControl {
 	Radio radio;
 	Checkbox checkbox;
 	Listbox listbox;
+	Combobox combobox;
+	Comboitem comboitem;
 	Timebox timebox;
 	Datebox datebox;
+	Button boton;
+	Label label;
+	Vlayout vlayout;
 	
 	public PreviaRespuestaControl() {
 		previarespuestas= new ArrayList<>();
 		previarespuestas= consulta();
 		campo= (Campo) Executions.getCurrent().getArg().get("Campo");
-		System.out.println(campo.getDetalle());
-		crearcomponente();
+		
+		//crearcomponente();
 	}
 	
 	@AfterCompose
 	public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
 		// Permite enlazar los componentes que se asocian con la anotacion @Wire
 		Selectors.wireComponents(view, this, false);
-	
+		
+		crearContexto();
 	}
 
 	/*
@@ -118,9 +128,36 @@ public class PreviaRespuestaControl {
 		}
 	}
 	
+	public void crearContexto(){
+		
+		vlayout = new Vlayout();
+		vlayout.setParent(formulariocampo);
+		
+		label= new  Label();
+		label.setValue(campo.getEnunciadoCampo().getEnunciado());
+		label.setParent(vlayout);
+		
+
+		crearcomponente();
+
+		
+		label= new Label();
+		label.setValue(campo.getDetalle());
+		label.setParent(vlayout);
+	}
+	
+	
 	
 	@Command
-	public void clickRespuestasPrevias(){}
+	public void clickRespuestasPrevias(){
+		try {
+			vlayout.detach();
+			crearContexto();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+	}
 	
 	@Command
 	public void dobleclickRespuestasPrevias(){}
@@ -179,28 +216,143 @@ public class PreviaRespuestaControl {
 	 */
 	@NotifyChange("formulariocampo")
 	public void crearcomponente(){
-		Integer componente= (int)(long)campo.getComponente().getIdComponente();
-		System.out.println(componente);
-		switch (componente){
-		case 1:
-			//crear caja de texto
-			creaCajaTexto();
-			break;
-		case 2:
-			creaCajaTexto();
-			break;
+		if(campo.getComponente().getIdComponente()!=null){
+			
+			Integer componente= (int)(long)campo.getComponente().getIdComponente();
+			//System.out.println(componente);
+			switch (componente){
+			case 1:
+				//crear caja de texto
+				creaCajaTexto();
+				break;
+			case 2:
+				creaOpcionMultiple();
+				break;
+			case 3:
+				creaCasillaVerificacion();
+				break;
+			case 4:
+				creaListaDesplegable();
+				break;
+			case 5:
+				creaEscalaLineal();
+				break;
+			case 6:
+				creaFecha();
+				break;
+			case 7:
+				creaHora();
+				break;
+				
+			}
+		}
 		
+	}
+	
+	/*
+	 * Crear caja de texto
+	 */
+	public void creaCajaTexto(){
+		if(respuestasseleccionada.size()==0){
+			textbox = new Textbox();
+			textbox.setParent(vlayout);
+		}else{
+			 
+		}
+		
+	}
+	
+	/*
+	 * Crear Opcion multiple Radio Group y Radio
+	 */
+	public void creaOpcionMultiple(){
+		radiogroup = new Radiogroup();
+		radiogroup.setId("rgrupo");
+		radiogroup.setOrient("vertical");
+		radiogroup.setParent(vlayout);
+		
+		if(respuestasseleccionada==null || respuestasseleccionada.size()==0){
+			for (int i = 0; i < 5; i++) {
+				radio= new Radio();
+				radio.setLabel("item "+i);
+				radio.setParent(radiogroup);
+			}	
+		}else{
+			for (PreviaRespuesta p : respuestasseleccionada) {
+				System.out.println(p.getPreviaRespuesta());
+				radio= new Radio();
+				radio.setLabel(p.getPreviaRespuesta());
+				radio.setParent(radiogroup);
+				}
+		}
+		
+	}
+	
+	/*
+	 * Crear Casilla de Verificacion
+	 */
+	public void creaCasillaVerificacion(){
+		if(respuestasseleccionada==null || respuestasseleccionada.size()==0){
+		for (int i = 0; i < 5; i++) {
+			checkbox = new Checkbox();
+			checkbox.setLabel("check "+ i);
+			checkbox.setParent(vlayout);
+		}
+		}else{
+			for (PreviaRespuesta p : respuestasseleccionada) {
+				checkbox = new Checkbox();
+				checkbox.setLabel(p.getPreviaRespuesta());
+				checkbox.setParent(vlayout);
+			}
 		}
 	}
 	
 	/*
 	 * Crear caja de texto
 	 */
-	@NotifyChange("formulariocampo")
-	public void creaCajaTexto(){
-		textbox = new Textbox();
-		textbox.setParent(formulariocampo);
+	public void creaListaDesplegable(){
+		combobox = new Combobox();
+		combobox.setParent(vlayout);
+		if(respuestasseleccionada==null || respuestasseleccionada.size()==0){
+			for (int i = 0; i < 5; i++) {
+				comboitem= new Comboitem();
+				comboitem.setLabel("comboitem "+i);
+				comboitem.setParent(combobox);
+			}	
+		}else{
+			for (PreviaRespuesta p : respuestasseleccionada) {
+				comboitem= new Comboitem();
+				comboitem.setLabel(p.getPreviaRespuesta());
+				comboitem.setParent(combobox);
+			}
+		}
+		
 	}
+	
+	/*
+	 * Crear caja de texto
+	 */
+	public void creaEscalaLineal(){
+		textbox = new Textbox();
+		textbox.setParent(vlayout);
+	}
+	
+	/*
+	 * Crear caja de texto
+	 */
+	public void creaFecha(){
+		textbox = new Textbox();
+		textbox.setParent(vlayout);
+	}
+	
+	/*
+	 * Crear caja de texto
+	 */
+	public void creaHora(){
+		textbox = new Textbox();
+		textbox.setParent(vlayout);
+	}
+	
 	
 	
 	/*
@@ -216,5 +368,6 @@ public class PreviaRespuestaControl {
 		for (PreviaRespuesta p : respuestasseleccionada) {
 		System.out.println(p.getPreviaRespuesta());
 		}
+		
 	}
 }

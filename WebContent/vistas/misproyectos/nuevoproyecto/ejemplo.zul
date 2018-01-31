@@ -16,7 +16,7 @@
 	<listitem>
 		<listcell label="Opcion Multiple" />
 		<listcell>
-			<radiogroup>
+			<radiogroup orient="vertical">
 				<label value="Sexo: "></label>
 				<radio label="Masculino"/>
 				<radio label="Femenino"/>
@@ -54,14 +54,14 @@
 		</listcell>
 	</listitem>
 	<listitem>
-		<listcell label="Fecha" />
+		<listcell label="Hora" />
 		<listcell>
 			 <timebox id="tb0" cols="12" format="short" onCreate="self.value = new Date()" />
 			
 		</listcell>
 	</listitem>
 	<listitem>
-		<listcell label="Hora" />
+		<listcell label="Fecha" />
 		<listcell>
 			
 			<datebox />

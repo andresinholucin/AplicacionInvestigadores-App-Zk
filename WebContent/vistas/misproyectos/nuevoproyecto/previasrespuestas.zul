@@ -48,7 +48,10 @@ hflex="min" vflex="min">
 		
 			<button id="s" label="Grabar" iconSclass="z-icon-save" onClick="@command('clickmostrarseleccionados')" />
 		</hlayout>	
-		<window id="formulariocampo" border="normal" >
+		
+		<window id="formulariocampo" border="normal" 
+		title="vea su componente" 
+		>
 		
 		</window>
 		
