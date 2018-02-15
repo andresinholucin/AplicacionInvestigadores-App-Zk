@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="Agrega Tus Respuestas" border="normal" id="winRespuestaPrevia"
+<window title="Agrega Tus Respuestas" border="normal" id="winRespuestaPrevia" 
 apply="org.zkoss.bind.BindComposer" 
 viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.PreviaRespuestaControl')"
 hflex="min" vflex="min">    

@@ -1,174 +1,171 @@
+<window id="winInterfaceVariable" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.InnterfaceVariableControl')">
 
-<?component name="verformulario-Nuevo" extends="div" class="ec.edu.upse.proyinv.controlador.misproyecto.VerFormularioControl"?>
+	<hlayout>
 
-<window id="winInterfaceVariable" 
-		apply="org.zkoss.bind.BindComposer" 
-		viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.InnterfaceVariableControl')">    
+		<vlayout>
+			<borderlayout vflex="min" hflex="min">
+				<center>
+					<grid>
+						<rows>
+							<row>
+								Nombre Interfaz:
+								<textbox id="nombreProyecto" value="@bind(vm.interfaz.nombreinterfaz)"
+									constraint="no empty" />
+							</row>
+							<row>
+								Descripcion del Interfaz:
+								<textbox id="descripcion" rows="2" hflex="1"
+									value="@bind(vm.interfaz.descripcion)" constraint="no empty" />
+							</row>
 
-<hlayout>
+						</rows>
+					</grid>
+				</center>
 
-<vlayout>	
-<borderlayout  vflex="min" hflex="min"> 
-			  <center>
-            		<grid>
-            			<rows>
-            				<row>
-            					Nombre Interfaz:
-            					<textbox
-            					id="nombreProyecto"
-            					value="@bind(vm.interfaz.nombreinterfaz)"
-            					constraint="no empty"/>
-            				</row> 
-            				<row>
-            					Descripcion del Interfaz:
-            					<textbox
-            					id="descripcion"
-            					rows="2" hflex="1" 
-            					value="@bind(vm.interfaz.descripcion)"
-            					constraint="no empty"/>
-            				</row>
-            					
-            			</rows>
-            		</grid>
-            	</center>
-           	     
-  </borderlayout>
-  
-  <separator orient="horizontal" spacing="8px" />
-  
-  <hlayout vflex="1">
-         <listbox id="listboxenunciado" height="400px" width="200px"
-                  onDrop="move(event.dragged)" 
-                  droppable="false" 
-                  oddRowSclass="non-odd"
-                  multiple="true" rows="8"
-                  model="@bind(vm.enunciadoCamopos)"
-                  selectedItem="@bind(vm.enunciadoCampoSeleccionado)"
-                  emptyMessage="No se ha Encontrado Resultados">
-            <listhead>
-				<listheader label="Enunciado" sort="auto" />
-				<listheader label="Tipo de Variable" sort="auto" />
-			</listhead>
-			<template name="model">
-	            <listitem draggable="true" 
-	            		  droppable="false"
-	            		  
-	            		  >
-	                <listcell onClick="@command('clickEnunciadoCampo')" 
-	                		  onDoubleClick="@command('doubleclickEnunciadoCampo')"
-	                		  src="/img/varios/check-list.png" 
-	                		  label="@load(each.enunciado)" />
-	                		  
-	                 <listcell label="@load(each.tipoVariable.tipoVariable)"
-	                		   onDoubleClick="@command('doubleclickEnunciadoCampo')">
-	                 
-	                 </listcell>
-	            </listitem>	 
-	            
-	                    
-       		</template>
-       		
-       		<listfoot>
-            	<listfooter>
-                	<textbox value="@bind(vm.txtBuscar)" hflex="1" vflex="1"></textbox>
-              	</listfooter>
-            	<listfooter>
-            		<button label="Buscar!" iconSclass="z-icon-search" onClick="@command('buscar')" />
-            	</listfooter>
-        </listfoot>
-        </listbox>
-    
-        
-        
-	<vlayout>
-		<hlayout>
-		<toolbarbutton label="Agregar Variable"    iconSclass="z-icon-plus" onClick="@command('addvariable')"/>
-		<toolbarbutton label="Quitar Variable"   iconSclass="z-icon-minus"  onClick="@command('quitarvariable')"  />
-		<toolbarbutton label="Ver Formulario"   iconSclass="z-icon-home"  onClick="@command('ver')" target="_blank"  />
-		</hlayout>
-			<!--lista de Variables Campos  -->
-			<listbox width="450px" height="371px" id="listboxcampos"
-             droppable="true"
-             oddRowSclass="non-odd"
-             multiple="true" rows="8"
-             model="@bind(vm.camposlist)"
-             selectedItem="@bind(vm.campoSeleccionado)"
-           
-             >
-				<listhead>
-					<listheader label="N°"  width="10%"/>
-					<listheader label="Enunciado"  />
-					<listheader label="Descripcion"  />
-					<listheader label="Componente"  />
-					<listheader label="Respuesta"  />
-				</listhead>
-				<template name="model">
-	            <listitem draggable="true" 
-	            		  droppable="true" 
-	            		  onDrop="@command('mover', dComponent=event.dragged)" >
-	            	<listcell label="@bind(each.numeroCampo)">
-	            	
-	            	</listcell>
-	            		  
-	                <listcell label="@bind(each.enunciadoCampo.enunciado)" >
-	                </listcell>
-	                
-	                <listcell >
-	                	<textbox rows="2" hflex="1" inplace="true" value="@bind(each.detalle)"/>
-	                </listcell>
-	                
-	                
-	                <listcell  label="@bind(each.componente.componente)">
-	                </listcell>
-	                
-	                <listcell onClick="@command('clickllamarPosiblesRespuestas')"
-	                		  
-	                		  onDoubleClick="@command('dobleclickllamarPosiblesRespuestas')">
-	                	
-	                	<listbox>
-	                		<listitem>
-	                			<listcell label="fgvsf"></listcell>
-	                		</listitem>
-	                		
-	                	</listbox>
-	               		
-	                	
-	                </listcell>
-	                
-	            </listitem>	         
-       		</template>	
-			</listbox>
-	</vlayout>	
-		        
-        <separator orient="vertical" spacing="8px" />
-  
-         <listbox id="listboxcomponente" height="400px" width="200px"
-                  onDrop="move(event.dragged)" 
-                  droppable="false" 
-                  oddRowSclass="non-odd"
-                  model="@bind(vm.componentes)"
-                  selectedItem="@bind(vm.componenteSelecionado)" >
-            <listhead>
-				<listheader label="Componentes" sort="auto" />
-			</listhead>
-			<template name="model">
-	            <listitem draggable="true" 
-	            		  droppable="true" 
-	            		  onDrop="move(event.dragged)" 
-	            		  >
-	                <listcell src="@load(each.img)"
-	                		   
-	                		  label="@load(each.componente)"
-	                		  onClick="@command('clickComponente')"
-	                		  onDoubleClick="@command('doubleclickComponente')"/>
-	            </listitem>	         
-       		</template>
-        </listbox>
-        
-    </hlayout>
- 
-    
-    <zscript><![CDATA[
+			</borderlayout>
+
+			<separator orient="horizontal" spacing="8px" />
+
+			<hlayout vflex="1">
+				<listbox id="listboxenunciado" height="400px" width="200px"
+					onDrop="move(event.dragged)" droppable="false" oddRowSclass="non-odd"
+					multiple="true" rows="8" model="@bind(vm.enunciadoCamopos)"
+					selectedItem="@bind(vm.enunciadoCampoSeleccionado)" emptyMessage="No se ha Encontrado Resultados">
+					<listhead>
+						<listheader label="Enunciado" sort="auto" />
+						<listheader label="Tipo de Variable" sort="auto" />
+					</listhead>
+					<template name="model">
+						<listitem draggable="true" droppable="false">
+							<listcell onClick="@command('clickEnunciadoCampo')"
+								onDoubleClick="@command('doubleclickEnunciadoCampo')" src="/img/varios/check-list.png"
+								label="@load(each.enunciado)" />
+
+							<listcell label="@load(each.tipoVariable.tipoVariable)"
+								onDoubleClick="@command('doubleclickEnunciadoCampo')">
+
+							</listcell>
+						</listitem>
+
+
+					</template>
+
+					<listfoot>
+						<listfooter>
+							<textbox value="@bind(vm.txtBuscar)" hflex="1" vflex="1"></textbox>
+						</listfooter>
+						<listfooter>
+							<button label="Buscar!" iconSclass="z-icon-search"
+								onClick="@command('buscar')" />
+						</listfooter>
+					</listfoot>
+				</listbox>
+
+
+
+				<vlayout>
+					<hlayout>
+						<toolbarbutton label="Agregar Variable" iconSclass="z-icon-plus"
+							onClick="@command('addvariable')" />
+						<toolbarbutton label="Quitar Variable" iconSclass="z-icon-minus"
+							onClick="@command('quitarvariable')" />
+						<toolbarbutton label="Ver Formulario" iconSclass="z-icon-home"
+							onClick="@command('ver')" target="_blank" />
+					</hlayout>
+					<!--lista de Variables Campos -->
+					<listbox width="450px" height="371px" id="listboxcampos"
+						droppable="true" oddRowSclass="non-odd" multiple="true" rows="8"
+						model="@bind(vm.camposlist)" selectedItem="@bind(vm.campoSeleccionado)">
+						<listhead>
+							<listheader label="N°" width="10%" />
+							<listheader label="Enunciado" />
+							<listheader label="Descripcion" />
+							<listheader label="Componente" />
+							<listheader label="Respuesta" />
+						</listhead>
+						<template name="model">
+							<listitem draggable="true" droppable="true"
+								onDrop="@command('mover', dComponent=event.dragged)">
+								<listcell label="@bind(each.numeroCampo)">
+
+								</listcell>
+
+								<listcell label="@bind(each.enunciadoCampo.enunciado)">
+								</listcell>
+
+								<listcell>
+									<textbox rows="2" hflex="1" inplace="true"
+										value="@bind(each.detalle)" />
+								</listcell>
+
+
+								<listcell label="@bind(each.componente.componente)">
+								</listcell>
+
+								<listcell onClick="@command('clickllamarPosiblesRespuestas')"
+
+									onDoubleClick="@command('dobleclickllamarPosiblesRespuestas')">
+<!-- 
+									<listbox model="@bind(each.previaRespuesta)">
+
+										<listitem>
+											<listcell label="@bind(each. )"></listcell>
+										</listitem>
+
+									</listbox>
+ -->
+
+								</listcell>
+
+							</listitem>
+						</template>
+					</listbox>
+				</vlayout>
+
+				<separator orient="vertical" spacing="8px" />
+
+				<listbox id="listboxcomponente" height="400px" width="200px"
+					onDrop="move(event.dragged)" droppable="false" oddRowSclass="non-odd"
+					model="@bind(vm.componentes)" selectedItem="@bind(vm.componenteSelecionado)">
+					<listhead>
+						<listheader label="Componentes" sort="auto" />
+					</listhead>
+					<template name="model">
+						<listitem draggable="true" droppable="true"
+							onDrop="move(event.dragged)">
+							<listcell src="@load(each.img)" label="@load(each.componente)"
+								onClick="@command('clickComponente')" onDoubleClick="@command('doubleclickComponente')" />
+						</listitem>
+					</template>
+					<listfoot height="60px">
+						<listfooter>
+
+							<div id="addopcion" visible="false">
+								<label value="Agrega Opcion"></label>
+
+								<combobox buttonVisible="false"
+									id="cbpr" model="@load(vm.previaRespuestas)"
+									selectedItem="@bind(vm.previaRespuestaSelecionada)"
+									readonly="false" onOK="@command('agregaRespuesta')">
+									<template name="model">
+										<comboitem
+											label="@bind(each.previaRespuesta)" value="@bind(each)">
+
+										</comboitem>
+									</template>
+
+								</combobox>
+							</div>
+
+						</listfooter>
+					</listfoot>
+				</listbox>
+
+			</hlayout>
+
+
+			<zscript><![CDATA[
         void move(Component dragged) {
         	
             if (self instanceof Listitem) {
@@ -183,30 +180,31 @@
         
        
     ]]></zscript>
-  
- 
-
-  
-  <hlayout>
-			<button id="grabar" label="Grabar" iconSclass="z-icon-save"   />
-			<button id="salir"  label="Salir"  iconSclass="z-icon-sign-out" onClick="@command('salir', ventana=winInterfaceVariable)" />
-		
-	</hlayout>	
-</vlayout>
-
-<vlayout>
-
-<window  id="winProyectoNuevo" 
-		 apply="ec.edu.upse.proyinv.controlador.misproyecto.ProyectoNuevoComposer" 
-		 vflex="min" width="600px" >
-	
-    <!-- <iframe id="iframe" src="/vistas/misproyectos/nuevoproyecto/verformulario.zul"
-    width="400px" height="400px"  /> -->
-	
-</window>
 
 
-</vlayout>	
-</hlayout>
+
+
+			<hlayout>
+				<button id="grabar" label="Grabar" iconSclass="z-icon-save" />
+				<button id="salir" label="Salir" iconSclass="z-icon-sign-out"
+					onClick="@command('salir', ventana=winInterfaceVariable)" />
+
+			</hlayout>
+		</vlayout>
+
+		<vlayout>
+
+			<window id="winVerFormulario"
+				border="normal"
+				vflex="max" width="500px">
+
+				<!-- <iframe id="iframe" src="/vistas/misproyectos/nuevoproyecto/verformulario.zul" 
+					width="400px" height="400px" /> -->
+
+			</window>
+
+
+		</vlayout>
+	</hlayout>
 
 </window>

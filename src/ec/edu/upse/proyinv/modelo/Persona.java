@@ -26,7 +26,10 @@ import lombok.Setter;
  * 
  */
 @Entity
-@NamedQuery(name="Persona.findAll", query="SELECT p FROM Persona p")
+@NamedQuery(name="Usuario.buscaUsuario",
+query="SELECT u "
+		+ "FROM Usuario u "
+		+ "WHERE u.usuario = :nombreUsuario")
 @NoArgsConstructor
 public class Persona implements Serializable {
 	private static final long serialVersionUID = 1L;
