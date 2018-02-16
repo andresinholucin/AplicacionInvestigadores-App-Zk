@@ -47,6 +47,7 @@ import ec.edu.upse.proyinv.modelo.Componente;
 import ec.edu.upse.proyinv.modelo.EnunciadoCampo;
 import ec.edu.upse.proyinv.modelo.Interfaz;
 import ec.edu.upse.proyinv.modelo.PreviaRespuesta;
+import ec.edu.upse.proyinv.modelo.TipoVariable;
 import ec.edu.upse.proyinv.modelo.auxiliares.Conexion;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,7 +55,7 @@ import lombok.Setter;
 public class InnterfaceVariableControl {
 	
 	Conexion con= new Conexion();
-	@Getter @Setter private String txtBuscar;
+
 	@Getter @Setter private String txtlistarespuesta;
 	
 	@Getter @Setter private Interfaz interfaz=new Interfaz();
@@ -76,7 +77,8 @@ public class InnterfaceVariableControl {
 		// Permite enlazar los componentes que se asocian con la anotacion @Wire
 		Selectors.wireComponents(view, this, false);
 		
-		previaRespuestas=consulta();
+		previaRespuestas=consultaPreviasRespuestas();
+		enunciadoCamopos=consultaEnunciadosCampos();
 		crearFormulario();
 		
 	}
@@ -85,21 +87,24 @@ public class InnterfaceVariableControl {
 	 * 
 	 * //para el tratamiento de la lista de los enunciados
 	 * 
-	 * 
 	 */
+
 	
-	@Setter List<EnunciadoCampo> enunciadoCamopos;
+	//Lista de EnunciadoCampo que viene del web service
 	ArrayList<EnunciadoCampo> enunciadoCampoarraylist = new ArrayList<EnunciadoCampo>();
+	//Lista que se llena e interactua en el Listbox 
+	@Getter @Setter List<EnunciadoCampo> enunciadoCamopos;
+	//EnunciadoCampo seleccionado
 	@Getter @Setter private EnunciadoCampo enunciadoCampoSeleccionado;
 	
-	/*
-	 * invocar lista de variables comunes (enunciados) al web service y llenar en el list box
-	 */
-	public List<EnunciadoCampo> getenunciadoCamopos(){
+	//control de la caja de texto
+	@Getter @Setter private String txtBuscar;
+	
+	@Getter @Setter private Listbox listboxenunciado;
+	
+	//consulta al web service los enunciados campos
+	public List<EnunciadoCampo> consultaEnunciadosCampos(){
 		try {
-			
-		if(txtBuscar==null || "".equals(txtBuscar)){
-			
 			String url=con.urlcompeta("proyectos/","enunciados/");
 			System.out.println(url);
 			RestTemplate restTemplateenunciado = new RestTemplate();
@@ -109,18 +114,6 @@ public class InnterfaceVariableControl {
 		        .forEach(proyecto -> enunciadoCampoarraylist.add(proyecto));		
 			System.out.println(enunciadoCampoarraylist);
 			return enunciadoCampoarraylist;
-			
-		}else{
-			List<EnunciadoCampo> result =new ArrayList<EnunciadoCampo>();
-				for(EnunciadoCampo ec: enunciadoCampoarraylist  ){
-					if (ec.getEnunciado().toLowerCase().contains(txtBuscar.toLowerCase())
-						|| ec.getTipoVariable().getTipoVariable().toLowerCase().contains(txtBuscar.toLowerCase())){
-							result.add(ec);
-						}
-				}
-			
-			return result;
-		}
 		} catch (Exception e) {
 			System.out.println(e);
 			// TODO: handle exception
@@ -128,14 +121,100 @@ public class InnterfaceVariableControl {
 		}
 	}
 	
+	//buscar Enunciados
+	public List<EnunciadoCampo> buscarEnunciadoCampo(){
+		List<EnunciadoCampo> result =new ArrayList<EnunciadoCampo>();
+		for(EnunciadoCampo ec: enunciadoCampoarraylist  ){
+			if (ec.getEnunciado().toLowerCase().contains(txtBuscar.toLowerCase())
+				|| ec.getTipoVariable().getTipoVariable().toLowerCase().contains(txtBuscar.toLowerCase())){
+					result.add(ec);
+				}
+		}
+		return result;
+	}
+	
 	/*
-	 * boton buscar enunciado
+	 * boton  AccionBotonEnunciado
 	 */
 	@Command
 	@NotifyChange("enunciadoCamopos")
-	public void buscar(){
-		System.out.println("busca");
+	public void AccionBotonEnunciado(@BindingParam("btnEnunciado") Button btnEnunciado){
+		//System.out.println("busca");
+		if(btnEnunciado.getLabel().equals("Buscar!")){
+			enunciadoCamopos=buscarEnunciadoCampo();
+			if(enunciadoCamopos.isEmpty()){
+				btnEnunciado.setLabel("Agregar!");
+				btnEnunciado.setIconSclass("z-icon-plus");
+			}else{
+				btnEnunciado.setLabel("Buscar!");
+				btnEnunciado.setIconSclass("z-icon-search");
+			}
+		}else if(btnEnunciado.getLabel().equals("Agregar!")){
+			
+			
+			if(addEnunciado()){
+				Clients.showNotification("listo");
+				btnEnunciado.setLabel("Buscar!");
+				btnEnunciado.setIconSclass("z-icon-search");
+			}else{
+				Clients.showNotification("ha ocurrido un error!");
+			}
+		}		
 	}
+	
+	/*
+	 * agrega un enunciado nuevo
+	 */
+	public boolean addEnunciado(){
+		if(validacion()){
+			System.out.println("1");
+		}else{
+			System.out.println("2");
+		}
+		
+		TipoVariable tv= new TipoVariable();
+		try {
+			String url=con.urlcompeta("proyectos/","tipovariable/");
+			System.out.println(url);
+			RestTemplate restTemplateenunciado = new RestTemplate();
+			ResponseEntity<TipoVariable> response= 
+				restTemplateenunciado.getForEntity(url, TipoVariable.class);
+			tv=response.getBody();
+		} catch (Exception e) {
+			System.out.println(e);
+			// TODO: handle exception
+		}
+				
+		EnunciadoCampo ec= new EnunciadoCampo();
+		ec.setEnunciado(txtBuscar);
+		ec.setTipoVariable(tv);
+		ec.setEstado("A");
+		
+		enunciadoCampoarraylist.add(ec);
+		
+		System.out.println("agregaste Enunciado");
+		return true;
+	}
+	
+	@Command
+	public void clickEnunciadoCampo(){}
+	
+	@Command
+	@NotifyChange("camposlist")
+	public void doubleclickEnunciadoCampo(){
+		if(campoSeleccionado==null){
+			if(validacion()==true){
+				nuevoCampo.setEnunciadoCampo(enunciadoCampoSeleccionado);;	
+				camposlist.set(ultimoregistro()-1, nuevoCampo);	
+			}
+		}else{
+			if(validacion()==true){
+				campoSeleccionado.setEnunciadoCampo(enunciadoCampoSeleccionado);
+				
+			}
+		}
+	}
+	
 	
 	/*
 	 * 
@@ -188,26 +267,7 @@ public class InnterfaceVariableControl {
 		camposlist.set(ultimoregistro(), nuevoCampo);	
 	}
 	
-	@Command
-	public void clickEnunciadoCampo(){}
-	
-	@Command
-	@NotifyChange("camposlist")
-	public void doubleclickEnunciadoCampo(){
-		if(campoSeleccionado==null){
-			if(validacion()==true){
-				nuevoCampo.setEnunciadoCampo(enunciadoCampoSeleccionado);;	
-				camposlist.set(ultimoregistro()-1, nuevoCampo);	
-			}
-		}else{
-			if(validacion()==true){
-				campoSeleccionado.setEnunciadoCampo(enunciadoCampoSeleccionado);
-				
-			}
-		}
-		
-		
-	}
+
 	
 	//para el tratamiento de la lista de componentes
 	
@@ -338,9 +398,6 @@ public class InnterfaceVariableControl {
 			Window ventanaCargar = (Window) Executions.createComponents("/vistas/misproyectos/nuevoproyecto/previasrespuestas.zul", null, params);
 			ventanaCargar.doModal();
 		}
-			
-	
-		
 	}
 	
 	@Command
@@ -349,10 +406,12 @@ public class InnterfaceVariableControl {
 	}
 	
 	/*
+	 * 
 	 * para el tratamiento del combo de agregar opcion
+	 * 
 	 */
 	
-	//Lista de Respuestas que viene del web service
+	//Lista de PreviaRespuestas que viene del web service
 	ArrayList<PreviaRespuesta> previarespuestaarraylist = new ArrayList<>();
 	//Lista que se llena e interactua en el combo sin boton 
 	@Getter @Setter List<PreviaRespuesta> previaRespuestas;
@@ -361,8 +420,8 @@ public class InnterfaceVariableControl {
 	//Combo para extraer la opcion que no se encuentra oir default
 	@Wire private Combobox cbpr;
 	
-	//consulta al web service de las resouestas previas
-	public List<PreviaRespuesta> consulta(){
+	//consulta al web service de las respuestas previas
+	public List<PreviaRespuesta> consultaPreviasRespuestas(){
 		String url=con.urlcompeta("proyectos/","previarespuesta/");
 		//System.out.println(url);
 		previarespuestaarraylist.clear();
@@ -786,12 +845,6 @@ public class InnterfaceVariableControl {
 		timebox.setFormat("short");
 		timebox.setCols(12);
 		timebox.setParent(hlayout);
-		
-		
-	
-		
 	}
-	
-	
 	
 }

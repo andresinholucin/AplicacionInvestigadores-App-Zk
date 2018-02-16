@@ -35,7 +35,8 @@ hflex="min" vflex="min">
                 	<textbox  value="@bind(vm.txtAccionPR)" hflex="1" vflex="1"></textbox>
               	</listfooter>
             	<listfooter>
-            		<button id="btnrespuesta" label="Buscar!" iconSclass="z-icon-search" onClick="@command('buscar', botonrespuesta=btnrespuesta)" />
+            		<button id="btnrespuesta" label="Buscar!" iconSclass="z-icon-search" 
+            		onClick="@command('buscar', botonrespuesta=btnrespuesta)" />
             	</listfooter>
         </listfoot>
         </listbox>

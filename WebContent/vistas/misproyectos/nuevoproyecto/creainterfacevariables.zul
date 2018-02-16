@@ -29,9 +29,12 @@
 
 			<hlayout vflex="1">
 				<listbox id="listboxenunciado" height="400px" width="200px"
-					onDrop="move(event.dragged)" droppable="false" oddRowSclass="non-odd"
-					multiple="true" rows="8" model="@bind(vm.enunciadoCamopos)"
-					selectedItem="@bind(vm.enunciadoCampoSeleccionado)" emptyMessage="No se ha Encontrado Resultados">
+					onDrop="move(event.dragged)" 
+					droppable="false" oddRowSclass="non-odd"
+					multiple="true" rows="8" 
+					model="@bind(vm.enunciadoCamopos)"
+					selectedItem="@bind(vm.enunciadoCampoSeleccionado)" 
+					emptyMessage="No se ha Encontrado Resultados">
 					<listhead>
 						<listheader label="Enunciado" sort="auto" />
 						<listheader label="Tipo de Variable" sort="auto" />
@@ -56,8 +59,9 @@
 							<textbox value="@bind(vm.txtBuscar)" hflex="1" vflex="1"></textbox>
 						</listfooter>
 						<listfooter>
-							<button label="Buscar!" iconSclass="z-icon-search"
-								onClick="@command('buscar')" />
+							<button id="btnEnunciado"
+							label="Buscar!" iconSclass="z-icon-search"
+								onClick="@command('AccionBotonEnunciado',btnEnunciado=btnEnunciado)" />
 						</listfooter>
 					</listfoot>
 				</listbox>
