@@ -1,5 +1,7 @@
 <window id="winInterfaceVariable" apply="org.zkoss.bind.BindComposer"
-	viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.InnterfaceVariableControl')">
+	viewModel="@id('vm') @init('ec.edu.upse.proyinv.controlador.misproyecto.InnterfaceVariableControl')"
+	xmlns:h="xhtml"
+	>
 
 	<hlayout>
 
@@ -110,6 +112,23 @@
 								<listcell onClick="@command('clickllamarPosiblesRespuestas')"
 
 									onDoubleClick="@command('dobleclickllamarPosiblesRespuestas')">
+									
+									<listbox model="@bind(vm.cprArrayList)">
+									<template name="model">
+										<listitem>
+											<listcell label="@load(each.previaRespuesta.previaRespuesta)">
+											</listcell>
+										</listitem>
+									</template>
+									</listbox>
+							
+							<!-- 		
+                					<h:ul id="ul" >
+						                    <h:li ></h:li>
+						                   
+						            </h:ul>
+						          -->   
+
 <!-- 
 									<listbox model="@bind(each.previaRespuesta)">
 
@@ -131,7 +150,7 @@
 
 				<listbox id="listboxcomponente" height="400px" width="200px"
 					onDrop="move(event.dragged)" droppable="false" oddRowSclass="non-odd"
-					model="@bind(vm.componentes)" selectedItem="@bind(vm.componenteSelecionado)">
+					model="@bind(vm.componentes)" selectedItem="@bind(vm.componenteSeleccionado)">
 					<listhead>
 						<listheader label="Componentes" sort="auto" />
 					</listhead>
@@ -200,7 +219,7 @@
 
 			<window id="winVerFormulario"
 				border="normal"
-				vflex="max" width="500px">
+				vflex="max" width="300px">
 
 				<!-- <iframe id="iframe" src="/vistas/misproyectos/nuevoproyecto/verformulario.zul" 
 					width="400px" height="400px" /> -->

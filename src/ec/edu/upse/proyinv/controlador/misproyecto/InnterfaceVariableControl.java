@@ -79,6 +79,7 @@ public class InnterfaceVariableControl {
 		
 		previaRespuestas=consultaPreviasRespuestas();
 		enunciadoCamopos=consultaEnunciadosCampos();
+		componentes=consultaComponentes();
 		crearFormulario();
 		
 	}
@@ -106,7 +107,6 @@ public class InnterfaceVariableControl {
 	public List<EnunciadoCampo> consultaEnunciadosCampos(){
 		try {
 			String url=con.urlcompeta("proyectos/","enunciados/");
-			System.out.println(url);
 			RestTemplate restTemplateenunciado = new RestTemplate();
 			ResponseEntity<EnunciadoCampo[]> response= 
 				restTemplateenunciado.getForEntity(url, EnunciadoCampo[].class);
@@ -239,10 +239,17 @@ public class InnterfaceVariableControl {
 	public void addvariable(){
 		//System.out.println("agregar");
 		nuevoCampo = new Campo();
+		cprArrayList= new ArrayList<>();
 		nuevoCampo.setNumeroCampo(ultimoregistro()+1);
+		nuevoCampo.setCampoPreviaRespuestas(cprArrayList);
 		camposlist.add(nuevoCampo);
+		
+		
+		
 		campoSeleccionado=null;
-
+		
+		
+		preRes= null;
 	}
 	
 	/*
@@ -267,34 +274,48 @@ public class InnterfaceVariableControl {
 		camposlist.set(ultimoregistro(), nuevoCampo);	
 	}
 	
-
-	
-	//para el tratamiento de la lista de componentes
-	
-	@Getter @Setter private Componente componenteSelecionado;
-	
-	/*
-	 * invocar lista de componentes al web service y llenar
-	 */
-	public List<Componente> getComponentes(){
-		String url=con.urlcompeta("proyectos/","componentes/");
-		System.out.println(url);
-		try {
-			ArrayList<Componente> componentearraylist = new ArrayList<Componente>();
-			RestTemplate restTemplatecomponente = new RestTemplate();
-			
-			ResponseEntity<Componente[]> response= 
-					restTemplatecomponente.getForEntity(url, Componente[].class);
-			Arrays.asList(response.getBody())
-	        .forEach(proyecto -> componentearraylist.add(proyecto));		
-			System.out.println(componentearraylist);
-			return componentearraylist;
-		} catch (Exception e) {
-			System.out.println(e);
-			// TODO: handle exception
-			return null;
+	public int ultimoregistro(){
+		int inde;
+		if(camposlist==null){
+			return 0;
+		}else{
+			inde =camposlist.size();
 		}
+		return inde;
 	}
+
+	/*
+	 * 
+	 * //para el tratamiento de la lista de componentes
+	 * 
+	 */
+	
+	//Lista de Componente que viene del web service
+	ArrayList<Componente> componentearraylist = new ArrayList<Componente>();
+	//Lista que se llena e interactua en el Listbox 
+	@Getter @Setter List<Componente> componentes;
+	//EnunciadoCampo seleccionado
+	@Getter @Setter private Componente componenteSeleccionado;
+		
+	
+	//consulta al web service los Componentes
+	public List<Componente> consultaComponentes(){
+			try {
+				String url=con.urlcompeta("proyectos/","componentes/");
+				RestTemplate restTemplatecomponente = new RestTemplate();			
+				ResponseEntity<Componente[]> response= 
+						restTemplatecomponente.getForEntity(url, Componente[].class);
+				Arrays.asList(response.getBody())
+		        .forEach(proyecto -> componentearraylist.add(proyecto));		
+				System.out.println(componentearraylist);
+				return componentearraylist;
+			} catch (Exception e) {
+				System.out.println(e);
+				// TODO: handle exception
+				return null;
+			}
+		}
+	
 	
 	@Command
 	@NotifyChange({"camposlist","addopcion"})
@@ -307,12 +328,14 @@ public class InnterfaceVariableControl {
 		//System.out.println(componenteSelecionado.getComponente());
 		if(campoSeleccionado==null){
 			if(validacion()==true){
-			nuevoCampo.setComponente(componenteSelecionado);
-			camposlist.set(ultimoregistro()-1, nuevoCampo);}
+			nuevoCampo.setComponente(componenteSeleccionado);
+			camposlist.set(ultimoregistro()-1, nuevoCampo);
 			mostrar();
+			}
+			
 		}else{
 			if(validacion()==true){
-				campoSeleccionado.setComponente(componenteSelecionado);
+				campoSeleccionado.setComponente(componenteSeleccionado);
 				mostrar();
 			}
 		}
@@ -321,10 +344,10 @@ public class InnterfaceVariableControl {
 	
 	@NotifyChange("addopcion")
 	public void mostrar(){
-		System.out.println(componenteSelecionado.getIdComponente());
-		if(componenteSelecionado.getIdComponente()==(2) 
-				|| componenteSelecionado.getIdComponente()==3
-				|| componenteSelecionado.getIdComponente()==4){
+		System.out.println(componenteSeleccionado.getIdComponente());
+		if(componenteSeleccionado.getIdComponente()==(2) 
+				|| componenteSeleccionado.getIdComponente()==3
+				|| componenteSeleccionado.getIdComponente()==4){
 			addopcion.setVisible(true);
 			System.out.println("visible");
 		}else{
@@ -333,24 +356,6 @@ public class InnterfaceVariableControl {
 		}
 	}
 
-	/*
-	 *salir y regresar pantalla anterior 
-	 */
-	@Command
-	public void salir(@BindingParam("ventana")  Window ventana){
-		ventana.detach();
-	}
-
-	public int ultimoregistro(){
-		int inde;
-		if(camposlist==null){
-			return 0;
-		}else{
-			inde =camposlist.size();
-		}
-		return inde;
-	}
-	
 	public boolean validacion(){
 		//System.out.println(camposlist.size());
 		if (camposlist.isEmpty() || camposlist==null || camposlist.size()==0){
@@ -370,8 +375,6 @@ public class InnterfaceVariableControl {
 	
 	@Command
 	public void clickllamarPosiblesRespuestas(){
-	
-		
 	}
 	
 	@Command
@@ -420,6 +423,14 @@ public class InnterfaceVariableControl {
 	//Combo para extraer la opcion que no se encuentra oir default
 	@Wire private Combobox cbpr;
 	
+
+	//arreglo de campospreviasRespuestas que se llena  
+	@Getter @Setter List<CampoPreviaRespuesta> cprArrayList;
+	
+	//Lista que se llena en cada campo mientras se va creando para agregar las respuestas
+	ArrayList<PreviaRespuesta> previaRespuestacampo;	
+	//Lista que interactua con la lista en las respuestas
+	@Getter @Setter List<PreviaRespuesta> preRes;	
 	//consulta al web service de las respuestas previas
 	public List<PreviaRespuesta> consultaPreviasRespuestas(){
 		String url=con.urlcompeta("proyectos/","previarespuesta/");
@@ -443,17 +454,19 @@ public class InnterfaceVariableControl {
 	
 	//esto se ejecuta al dar Ok selecciona respuesta por default o nuevo
 	@Command
+	@NotifyChange("camposlist")
 	public void agregaRespuesta(){
 		try {
 			
 			if(previaRespuestaSelecionada==null){
-				System.out.println("addNuevo");
-				System.out.println(cbpr.getText());
+				addNuevo();
+							
 			}else{
-				System.out.println("add");
-				System.out.println(previaRespuestaSelecionada.getPreviaRespuesta());
 				addExistente();
+				
 			}
+			//preRes=previaRespuestacampo;
+			//asignarCampoPreviaRespuesta();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -461,8 +474,43 @@ public class InnterfaceVariableControl {
 	
 	//agrega una opcion que existe por default
 	public void addExistente(){
+		CampoPreviaRespuesta cpr=new CampoPreviaRespuesta();
+		cpr.setPreviaRespuesta(previaRespuestaSelecionada);
+		cprArrayList.add(cpr);
+		nuevoCampo.setCampoPreviaRespuestas(cprArrayList);
+		
+		/*previaRespuestacampo.add(previaRespuestaSelecionada);
+		for (PreviaRespuesta p : previaRespuestacampo) {
+			System.out.println(p.getPreviaRespuesta());
+		}*/
 		
 	}
+	
+	//agrega una opcion nueva
+	public void addNuevo(){
+		PreviaRespuesta pr= new PreviaRespuesta();
+		pr.setPreviaRespuesta(cbpr.getText());
+		previaRespuestacampo.add(pr);
+		
+		for (PreviaRespuesta p : previaRespuestacampo) {
+			System.out.println(p.getPreviaRespuesta());
+		}
+	}
+	
+	public void asignarCampoPreviaRespuesta(){
+		
+		for(int i=0;i<previaRespuestacampo.size();i++){
+			CampoPreviaRespuesta cpr= new CampoPreviaRespuesta();
+			cpr.setPreviaRespuesta(previaRespuestacampo.get(i));
+			cprArrayList.add(cpr);
+		}
+		nuevoCampo.setCampoPreviaRespuestas(cprArrayList);
+	}
+	
+	
+	
+	
+	
 	
 	/*
 	 * 
@@ -514,6 +562,7 @@ public class InnterfaceVariableControl {
 	
 	public void formulariodefault(){
 		winVerFormulario.setTitle("Formulario");
+
 		listbox = new Listbox();
 		listbox.setWidth("100%");
 		listbox.setParent(vlayout);
@@ -696,7 +745,9 @@ public class InnterfaceVariableControl {
 	}
 	
 	public void formulariolista(){
+		int i=0;
 		for (Campo campo : camposlist) {
+			i=i+1;
 			hlayout = new Hlayout();
 			hlayout.setParent(vlayout);
 			
@@ -751,7 +802,7 @@ public class InnterfaceVariableControl {
 	 */
 	public void creaOpcionMultiple(Campo c){
 		radiogroup = new Radiogroup();
-		radiogroup.setId("rgrupo");
+		//radiogroup.setId("rgrupo");
 		radiogroup.setOrient("vertical");
 		radiogroup.setParent(hlayout);
 
@@ -847,4 +898,11 @@ public class InnterfaceVariableControl {
 		timebox.setParent(hlayout);
 	}
 	
+	/*
+	 *salir y regresar pantalla anterior 
+	 */
+	@Command
+	public void salir(@BindingParam("ventana")  Window ventana){
+		ventana.detach();
+	}
 }
